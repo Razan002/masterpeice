@@ -4,7 +4,7 @@
     <div class="container py-5">
         <div class="row justify-content-center py-5">
             <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-                <h1 class="display-3 text-white animated slideInDown">Down Town</h1>
+                <h1 class="display-3 text-white animated slideInDown">{{ $package->title }}</h1>
             </div>
         </div>
     </div>
@@ -13,61 +13,60 @@
 <!-- Page Content -->
 <div class="container py-5">
     <div class="row">
-        <!-- Left Section with 5 Images -->
+        <!-- Left Section with Images -->
         <div class="col-md-6">
             <div class="row">
-                <div class="col-12 mb-4">
-                    <img src="assets\img\del1.jpg" alt="Image 1" class="img-fluid rounded">
-                </div>
-                <div class="col-md-6 mb-4">
-                    <img src="https://via.placeholder.com/300x200" alt="Image 2" class="img-fluid rounded">
-                </div>
-                <div class="col-md-6 mb-4">
-                    <img src="https://via.placeholder.com/300x200" alt="Image 3" class="img-fluid rounded">
-                </div>
-                <div class="col-md-6 mb-4">
-                    <img src="https://via.placeholder.com/300x200" alt="Image 4" class="img-fluid rounded">
-                </div>
-                <div class="col-md-6 mb-4">
-                    <img src="https://via.placeholder.com/300x200" alt="Image 5" class="img-fluid rounded">
-                </div>
+                @foreach($package->media as $media)
+                    <div class="col-12 mb-4">
+                        <img src="{{ asset('storage/images/' . $media->media) }}" alt="Image" class="img-fluid rounded">
+                    </div>
+                @endforeach
             </div>
         </div>
         
         <!-- Right Section with Details -->
         <div class="col-md-6">
-            <h2 class="mb-4">Downtown Details</h2>
-            <p class="lead">Explore the vibrant heart of the city</p>
-            
-            <div class="mb-4">
-                <h4>About Downtown</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.</p>
-            </div>
-            
-            <div class="mb-4">
-                <h4>Features</h4>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Historic Architecture</li>
-                    <li class="list-group-item">Shopping Districts</li>
-                    <li class="list-group-item">Fine Dining</li>
-                    <li class="list-group-item">Cultural Centers</li>
-                    <li class="list-group-item">Nightlife</li>
-                </ul>
-            </div>
-            
-            <div class="mb-4">
-                <h4>Contact Information</h4>
-                <p><i class="fa fa-map-marker-alt"></i> 123 Main Street, Downtown</p>
-                <p><i class="fa fa-phone"></i> (123) 456-7890</p>
-                <p><i class="fa fa-envelope"></i> info@downtown.com</p>
-            </div>
+            <h2 class="mb-4">{{ $package->title }} Details</h2>
+            <p class="lead">{{ $package->description }}</p>
+            <p class="h4 text-primary mb-4">Price: {{ $package->price }} JOD</p>
 
-            <!-- Book Now Button -->
-            <div class="text-center mt-4">
-                <button class="btn btn-primary btn-lg px-4 py-2">
+            <form action="{{ route('bookings.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="package_id" value="{{ $package->id }}">
+                <input type="hidden" name="destination_id" value="{{ $package->destination_id }}">
+                <input type="hidden" name="total_price" value="{{ $package->price }}">
+                
+                <!-- Travel Date -->
+                <div class="mb-4">
+                    <label for="travel_date" class="form-label">Travel Date</label>
+                    <input type="text" class="form-control" id="travel_date" name="booking_date" value="{{ \Carbon\Carbon::parse($package->travel_date)->format('d M, Y') }}" readonly>
+                </div>
+            
+                <!-- Number of People -->
+                <div class="mb-4">
+                    <label for="people_count" class="form-label">Number of People</label>
+                    <input type="number" class="form-control" id="people_count" name="people_count" min="1" max="{{ $package->max_people }}" required>
+                </div>
+                
+                <!-- Payment Method -->
+                <div class="mb-4">
+                    <label for="payment_method" class="form-label">Payment Method</label>
+                    <select class="form-select" id="payment_method" name="payment_method" required>
+                        <option value="online">Online Payment</option>
+                        <option value="on_spot">Pay on Spot</option>
+                    </select>
+                </div>
+            
+                <!-- Custom Package Details -->
+                <div class="mb-4">
+                    <label for="custom_package_details" class="form-label">Custom Package Details (Optional)</label>
+                    <textarea class="form-control" id="custom_package_details" name="custom_package_details" rows="3"></textarea>
+                </div>
+            
+                <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
                     Book Now
                 </button>
-            </div>
+            </form>
         </div>
     </div>
 </div>

@@ -11,7 +11,7 @@ class MediaTableSeeder extends Seeder
     {
         DB::table('media')->insert([
             [
-                'package_id' => 12,  // فرضًا أن الحزمة مع رقم ID 1
+                'package_id' => 1,  // فرضًا أن الحزمة مع رقم ID 1
                 'product_id' => null,  // لا يوجد منتج مرتبط في هذا المثال
                 'media' => 'adventure-package-1.jpg',  // اسم الصورة
             ],

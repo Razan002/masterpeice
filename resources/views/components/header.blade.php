@@ -79,8 +79,8 @@
                             {{ Auth::user()->name }} <!-- Display user's name -->
                         </a>
                         <div class="dropdown-menu m-0">
-                            <a href="{{ route('profile') }}" class="dropdown-item">
-                                <i class="fas fa-user-circle me-2"></i>  
+                            <a href="{{ route('profile.show') }}" class="dropdown-item">
+                                <i class="fas fa-user-circle me-2"></i>  profile
                             </a>
                             <a href="{{ route('logout') }}" class="dropdown-item" 
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>

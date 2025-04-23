@@ -10,7 +10,21 @@ class Package extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'max_people', 'meal', 'has_hotel', 'type', 'guide_id', 'destination_id', 'price'
+        'title',
+        'description',
+        'max_people',
+        'meal',
+        'has_hotel',
+        'type',
+        'guide_id',
+        'destination_id',
+        'has_museum',
+        'museum_name',
+        'price',
+        'date',
+        'start_time',
+        'end_time',
+        'day_of_week'
     ];
 
     public function activities()

@@ -41,4 +41,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Package::class, 'guide_id');
     }
+
+    // دالة مساعدة للحصول على اسم الدور بشكل مقروء
+    public function getRoleNameAttribute()
+    {
+        return match($this->role) {
+            'general_admin' => 'General_Admin',
+            'general_owner' => 'product_Owner',
+            'user' => 'User',
+            default => 'User'
+        };
+    }
 }

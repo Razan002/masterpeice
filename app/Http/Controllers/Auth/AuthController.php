@@ -20,17 +20,35 @@ class AuthController extends Controller
     // عملية تسجيل الدخول
     public function login(Request $request)
     {
-        // التحقق من المدخلات
-        $credentials = $request->only('email', 'password');
-        
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+    
         if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+    
+            // التحقق من الدور بناءً على العمود 'role' في جدول المستخدمين
+            $user = Auth::user();
+            
+            if ($user->role == 'general_admin') {
+                // التوجيه إلى لوحة التحكم الخاصة بـ general_admin
+                return redirect()->intended(route('admin.dashboard'));
+            } elseif ($user->role == 'admin') {
+                // التوجيه إلى لوحة التحكم الخاصة بـ admin
+                return redirect()->intended(route('general_admin.dashboard'));
+            }
+    
+            // إذا لم يكن المستخدم من أي من الأدوار المذكورة
             return redirect()->intended('/home');
         }
-
+    
         return back()->withErrors([
-            'email' => 'These credentials do not match our records.',
+            'email' => 'بيانات الاعتماد هذه غير متطابقة مع سجلاتنا.',
         ]);
     }
+    
+    
 
     // عرض نموذج التسجيل
     public function showRegistrationForm()

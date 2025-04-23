@@ -10,10 +10,10 @@
                     Discover the rich history, stunning landscapes, and unique cultural experiences of Al-Salt, Jordan. Whether you’re looking for ancient sites, scenic views, or local delights, we’ve got something special for you.
                 </p>
                 
-                <div class="position-relative w-75 mx-auto animated slideInDown">
+                {{-- <div class="position-relative w-75 mx-auto animated slideInDown">
                     <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Al-Salt Old Town, Mount Nebo" data-lang-placeholder="Eg: Al-Salt Old Town, Mount Nebo">
                     <button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute top-0 end-0 me-2" style="margin-top: 7px;" data-lang="Search">Search</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -139,7 +139,7 @@
 @include('awesomepackeges')
 
 <!-- Booking Start -->
-<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+{{-- <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
         <div class="booking p-5">
             <div class="row g-5 align-items-center">
@@ -197,7 +197,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- Booking Start -->
 
 

@@ -60,9 +60,7 @@
                                     data-bs-target="#bookingModal">
                                 <i class="fas fa-ticket-alt me-2"></i> Book Now
                             </button>
-                            <a href="#" class="btn btn-outline-primary w-100 mb-2">
-                                <i class="fas fa-map-marked-alt me-2"></i> Get Directions
-                            </a>
+                           
                         </div>
                     </div>
                 </div>
@@ -174,8 +172,8 @@
             <form id="bookingForm" action="{{ route('bookings.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="destination_id" value="{{ $destination->id }}">
-                <input type="hidden" name="total_price" value="{{ $destination->price }}">
-                
+                <input type="hidden" name="total_price" value="{{ $destination->price * (isset($people_count) ? $people_count : 1) }}">ph                
+            
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="bookingModalLabel">
                         <i class="fas fa-ticket-alt me-2"></i>
@@ -186,7 +184,12 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="booking_date" class="form-label">Select Date</label>
-                        <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                        <input type="date" 
+                               class="form-control" 
+                               id="booking_date" 
+                               name="booking_date" 
+                               min="{{ \Carbon\Carbon::today()->format('Y-m-d') }}" 
+                               required>
                         <small class="text-muted">Open from 9:00 AM to 6:00 PM</small>
                     </div>
                     <div class="mb-3">
@@ -203,6 +206,10 @@
                                 <i class="fas fa-money-bill-wave me-2"></i> Pay On Spot
                             </label>
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="people_count" class="form-label">People Count</label>
+                        <input type="number" name="people_count" class="form-control" min="1" value="1" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Price Summary</label>
@@ -243,6 +250,7 @@
                     </button>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>

@@ -148,7 +148,7 @@ button:hover {
 </head>
 <body>
   <div class="wrapper">
-<form action="{{ route('login') }}" method="POST">
+<form action="{{ route('loginn') }}" method="POST">
   @csrf  <!-- Laravel CSRF token for security -->
   <h2>Login</h2>
   <div class="input-field">

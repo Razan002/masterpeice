@@ -8,21 +8,41 @@ use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
+
     public function index()
     {
-        $packages = Package::with('media', 'destination')  // تحميل العلاقات بشكل مسبق (Eager Loading)
-        ->paginate(9);  // تحديد عدد العناصر في الصفحة (9 عناصر لكل صفحة)
-        
+        $packages = Package::with('media', 'destination')
+            ->paginate(9);
+
         $destinations = Destination::all();
-        return view('package', compact('packages', 'destinations')); // تغيير 'packages.index' إلى 'package'
+
+        // جلب آخر 3 حزم لعرضها في قسم خاص
+        $latestPackages = Package::with('media', 'destination')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('package', compact('packages', 'destinations', 'latestPackages'));
     }
+
 
     public function detailspackages($id)
     {
-        $package = Package::findOrFail($id);
-        return view('detailspackages', compact('package'));
-    }
-    
-    
-}
+        $package = Package::with('media', 'destination')->findOrFail($id);
 
+        // جلب آخر 3 حزم (باستثناء الحزمة الحالية)
+        $latestPackages = Package::with('media', 'destination')
+            ->where('id', '!=', $id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('detailspackages', compact('package', 'latestPackages'));
+    }
+
+    public function makeAvailable(Package $package)
+    {
+        $package->update(['is_available' => true]);
+        return back()->with('success', 'تم تفعيل الباقة بنجاح');
+    }
+}

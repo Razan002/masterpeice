@@ -10,27 +10,33 @@ class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('users')->insert([
+        DB::table('users')->updateOrInsert(
+            ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
                 'email' => 'admin@example.com',
-                'password' => Hash::make('12345'),
+                'password' => bcrypt('password'),
                 'phone' => '0791234567',
-                'address' => 'Amman, Jordan',
                 'role' => 'general_admin',
+                'address' => 'Amman, Jordan',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
+            ]
+        );
+        
+        DB::table('users')->updateOrInsert(
+            ['email' => 'user@example.com'],
             [
                 'name' => 'General User',
                 'email' => 'user@example.com',
-                'password' => Hash::make('12345'),
+                'password' => bcrypt('password'),
                 'phone' => '0781234567',
-                'address' => 'Irbid, Jordan',
                 'role' => 'user',
+                'address' => 'Irbid, Jordan',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-        ]);
+            ]
+        );
+        
     }
 }

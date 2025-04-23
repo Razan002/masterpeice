@@ -32,4 +32,20 @@ class Review extends Model
     {
         return $this->belongsTo(User::class, 'guide_id');
     }
+
+    public static function canReview($userId, $destinationId)
+    {
+        return Booking::where('user_id', $userId)
+                    ->where('destination_id', $destinationId)
+                    ->where('status', 'confirmed')
+                    ->exists();
+    }
+
+    public static function getUserBooking($userId, $destinationId)
+    {
+        return Booking::where('user_id', $userId)
+                    ->where('destination_id', $destinationId)
+                    ->where('status', 'confirmed')
+                    ->first();
+    }
 }

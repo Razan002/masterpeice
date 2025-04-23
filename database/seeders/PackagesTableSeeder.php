@@ -20,7 +20,7 @@ class PackagesTableSeeder extends Seeder
                 'has_hotel' =>0,
                 'type' => 'adventure',
                 'guide_id' => 1,
-                'destination_id' => 7,  // فرضًا أن وسط البلد-السلط في الـ destination_id 1
+                'destination_id' => 1,  // فرضًا أن وسط البلد-السلط في الـ destination_id 1
                 'price' => 50.00,
                 'date' => Carbon::now()->toDateString(),
                 'has_museum' => true,  // يوجد متحف في وسط البلد
