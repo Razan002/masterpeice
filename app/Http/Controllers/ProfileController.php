@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Booking;
 use App\Models\User;
+use App\Models\Review;
+use App\Models\Destination;
+use App\Models\Package;
+use App\Models\SpecialOffer;
 
 class ProfileController extends Controller
 {
@@ -57,4 +61,45 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.show')->with('success', 'تم إلغاء الحجز بنجاح!');
     }
+
+    public function addReview(Request $request)
+{
+    // التحقق من أن المستخدم قد حجز بالفعل
+    $user = Auth::user();
+    
+    // التحقق من الحجز
+    $booking = Booking::where('user_id', $user->id)
+        ->where('status', '!=', 'cancelled')
+        ->where('destination_id', $request->destination_id)  // أو `package_id` حسب الحالة
+        ->first();
+
+    if (!$booking) {
+        return back()->with('error', 'لا يمكنك إضافة مراجعة لأنك لم تقم بالحجز لهذا المكان.');
+    }
+
+    // إذا كان هناك حجز صالح، يتم إضافة المراجعة
+    $review = new Review();
+    $review->user_id = $user->id;
+    $review->destination_id = $request->destination_id;  // أو `package_id`
+    $review->booking_id = $booking->id;  // حفظ الـ booking_id في المراجعة
+    $review->rating = $request->rating;
+    $review->comment = $request->comment;
+    $review->save();
+
+    return back()->with('success', 'تم إضافة المراجعة بنجاح!');
+}
+
+
+public function showDestinationDetails($id)
+{
+    // استرجاع تفاصيل الـ destination
+    $destination = Destination::findOrFail($id);
+
+    // استرجاع المراجعات المرتبطة بالـ destination
+    $reviews = Review::where('destination_id', $destination->id)->get();
+
+    // تمرير الـ destination و الـ reviews إلى الـ view
+    return view('destinationdetails', compact('destination', 'reviews'));
+}
+
 }

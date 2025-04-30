@@ -27,5 +27,10 @@ class Booking extends Model
     {
         return $this->belongsTo(Destination::class);
     }
-}
 
+    // إضافة العلاقة بين الحجز والمراجعات
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+}

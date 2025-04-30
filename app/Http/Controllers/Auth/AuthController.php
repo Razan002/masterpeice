@@ -34,9 +34,9 @@ class AuthController extends Controller
             if ($user->role == 'general_admin') {
                 // التوجيه إلى لوحة التحكم الخاصة بـ general_admin
                 return redirect()->intended(route('admin.dashboard'));
-            } elseif ($user->role == 'admin') {
-                // التوجيه إلى لوحة التحكم الخاصة بـ admin
-                return redirect()->intended(route('general_admin.dashboard'));
+            } elseif ($user->role == 'product_owner') {
+                // التوجيه إلى لوحة التحكم الخاصة بـ product_owner
+                return redirect()->intended(route('product_owner.dashboard'));
             }
     
             // إذا لم يكن المستخدم من أي من الأدوار المذكورة

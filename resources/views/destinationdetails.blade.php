@@ -1,354 +1,380 @@
-@include('components.header')
 
-<div class="container-fluid py-5 bg-light">
-    <div class="container">
-        <!-- Main Card -->
-        <div class="card shadow-sm">
-            <div class="row g-0">
-                <!-- Image Section -->
-                <div class="col-md-8">
-                    <div class="destination-hero">
-                        <img src="{{ Storage::url('images/'.$destination->image) }}" 
-                             class="img-fluid rounded-start" 
-                             alt="{{ $destination->name }}"
-                             style="height: 100%; object-fit: cover;">
-                    </div>
-                </div>
-                
-                <!-- Info Section -->
-                <div class="col-md-4">
-                    <div class="card-body h-100 d-flex flex-column">
-                        <h1 class="card-title display-6">{{ $destination->name }}</h1>
-                        
-                        <!-- Price & Discount -->
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            @if($destination->price > 0)
-                                <span class="badge bg-primary fs-5">
-                                    {{ number_format($destination->price, 2) }} JOD
-                                </span>
-                            @else
-                                <span class="badge bg-success fs-5">FREE</span>
-                            @endif
-                            
-                            @if($destination->discount)
-                                <span class="badge bg-danger fs-5">
-                                    Save {{ $destination->discount }}%
-                                </span>
-                            @endif
-                        </div>
-                        
-                        <!-- Quick Facts -->
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                                <span>{{ $destination->location }}</span>
-                            </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-clock me-2 text-primary"></i>
-                                <span>Suggested duration: 2-3 hours</span>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-calendar-alt me-2 text-primary"></i>
-                                <span>Open daily from 9:00 AM to 6:00 PM</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Action Buttons -->
-                        <div class="mt-auto">
-                            <button class="btn btn-primary btn-lg w-100 mb-2" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#bookingModal">
-                                <i class="fas fa-ticket-alt me-2"></i> Book Now
-                            </button>
-                           
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Description Section -->
-        <div class="row mt-5">
-            <div class="col-lg-8">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h2 class="card-title mb-4">About {{ $destination->name }}</h2>
-                        <div class="card-text">
-                            <p class="lead">{{ $destination->description }}</p>
-                            <hr>
-                            <h4 class="mt-4">Highlights</h4>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    Guided tours available
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    Family-friendly environment
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    Wheelchair accessible
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Reviews Section -->
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title mb-4">Visitor Reviews</h3>
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="rating-stars me-3">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star-half-alt text-warning"></i>
-                                <span class="ms-2">4.5 (128 reviews)</span>
-                            </div>
-                        </div>
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Be the first to review this destination!
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Sidebar -->
-            <div class="col-lg-4">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h3 class="card-title mb-3">Gallery</h3>
-                        <div class="row g-2">
-                            @for($i = 1; $i <= 6; $i++)
-                            <div class="col-4 col-md-6 col-lg-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#galleryModal">
-                                    <img src="https://via.placeholder.com/300x200?text={{ $destination->name }}+{{ $i }}" 
-                                         class="img-thumbnail" 
-                                         alt="Gallery Image {{ $i }}">
-                                </a>
-                            </div>
-                            @endfor
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Contact Card -->
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title mb-3">Contact Information</h3>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <i class="fas fa-phone-alt me-2 text-primary"></i>
-                                +962 6 123 4567
-                            </li>
-                            <li class="mb-2">
-                                <i class="fas fa-envelope me-2 text-primary"></i>
-                                info@{{ str_replace(' ', '', strtolower($destination->name)) }}.com
-                            </li>
-                            <li class="mb-2">
-                                <i class="fas fa-globe me-2 text-primary"></i>
-                                www.{{ str_replace(' ', '', strtolower($destination->name)) }}.com
-                            </li>
-                            <li>
-                                <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                                {{ $destination->location }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Booking Modal -->
-<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form id="bookingForm" action="{{ route('bookings.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="destination_id" value="{{ $destination->id }}">
-                <input type="hidden" name="total_price" value="{{ $destination->price * (isset($people_count) ? $people_count : 1) }}">ph                
-            
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="bookingModalLabel">
-                        <i class="fas fa-ticket-alt me-2"></i>
-                        Book {{ $destination->name }}
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="booking_date" class="form-label">Select Date</label>
-                        <input type="date" 
-                               class="form-control" 
-                               id="booking_date" 
-                               name="booking_date" 
-                               min="{{ \Carbon\Carbon::today()->format('Y-m-d') }}" 
-                               required>
-                        <small class="text-muted">Open from 9:00 AM to 6:00 PM</small>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Payment Method</label>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment_method" id="onlinePayment" value="online" checked>
-                            <label class="form-check-label" for="onlinePayment">
-                                <i class="fas fa-credit-card me-2"></i> Online Payment
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_method" id="onSpotPayment" value="on_spot">
-                            <label class="form-check-label" for="onSpotPayment">
-                                <i class="fas fa-money-bill-wave me-2"></i> Pay On Spot
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="people_count" class="form-label">People Count</label>
-                        <input type="number" name="people_count" class="form-control" min="1" value="1" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Price Summary</label>
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <span>Ticket x1</span>
-                                    <span>{{ number_format($destination->price, 2) }} JOD</span>
-                                </div>
-                                @if($destination->discount)
-                                <div class="d-flex justify-content-between text-danger">
-                                    <span>Discount ({{ $destination->discount }}%)</span>
-                                    <span>-{{ number_format($destination->price * $destination->discount / 100, 2) }} JOD</span>
-                                </div>
-                                @endif
-                                <hr>
-                                <div class="d-flex justify-content-between fw-bold">
-                                    <span>Total</span>
-                                    <span>
-                                        @if($destination->discount)
-                                            {{ number_format($destination->price * (1 - $destination->discount / 100), 2) }}
-                                        @else
-                                            {{ number_format($destination->price, 2) }}
-                                        @endif
-                                        JOD
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-2"></i> Cancel
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-check-circle me-2"></i> Confirm Booking
-                    </button>
-                </div>
-            </form>
-            
-        </div>
-    </div>
-</div>
-
-<!-- Gallery Modal -->
-<div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ $destination->name }} Gallery</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <img src="https://via.placeholder.com/800x500?text={{ $destination->name }}" 
-                     class="img-fluid" 
-                     alt="Gallery Image">
-            </div>
-        </div>
-    </div>
-</div>
-
-@include('components.footer')
-
-@section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('booking_date').min = today;
+<style>
+    /* Base Styles */
+    :root {
+        --primary-color:  #6f991c;
+        --secondary-color:  #6f991c;
+        --accent-color: #e74c3c;
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --dark-gray: #777;
+    }
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Destination Container */
+    .destination-container {
+        max-width: 1200px;
+        margin: 4rem auto; /* زيادة الهامش العلوي */
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: row-reverse; /* جعل الصورة على اليمين */
+    }
+    
+    /* Cover Image */
+    .destination-cover {
+        position: relative;
+        height: 400px;
+        width: 50%; /* جعل الصورة تأخذ نصف العرض */
+        overflow: hidden;
+    }
+    
+    .destination-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .destination-cover:hover img {
+        transform: scale(1.05);
+    }
+    
+    /* Content Section */
+    .destination-content {
+        padding: 2rem;
+        width: 50%; /* جعل المحتوى يأخذ نصف العرض */
+        margin-top: 2rem; /* تحريك المحتوى للأسفل */
+    }
+    
+    h1 {
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        font-size: 2.5rem;
+    }
+    
+    .description {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 2.5rem;
+        line-height: 1.8;
+    }
+    
+    /* Price Section */
+    .price {
+        background-color: var(--light-gray);
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        display: inline-block;
+        margin-bottom: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        font-size: 1.2rem;
+    }
+    
+    /* Details Grid */
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .detail-card {
+        background: var(--light-gray);
+        padding: 1.5rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .detail-icon {
+        font-size: 1.5rem;
+        margin-left: 1rem;
+        color: var(--primary-color);
+    }
+    
+    /* Gallery Section */
+    .gallery {
+        margin: 3rem 0;
+    }
+    
+    .gallery-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+    }
+    
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .gallery-item {
+        height: 180px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+    
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 1.5rem;
+        margin: 3rem 0 2rem;
+    }
+    
+    .btn {
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+    }
+    
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0a141c;
+    }
+    
+    .btn-secondary {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #27ae60;
+    }
+    
+    .btn-icon {
+        margin-right: 0.8rem;
+        font-size: 1.1rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .destination-container {
+            flex-direction: column;
+            align-items: center;
+        }
         
-        // Calculate and update total price if discount exists
-        @if($destination->discount)
-            const originalPrice = {{ $destination->price }};
-            const discount = {{ $destination->discount }};
-            const discountedPrice = originalPrice * (1 - discount / 100);
-            document.querySelector('input[name="total_price"]').value = discountedPrice.toFixed(2);
+        .destination-cover {
+            height: 300px;
+            width: 100%;
+        }
+        
+        .destination-content {
+            width: 100%;
+            padding: 1.5rem;
+        }
+        
+        h1 {
+            font-size: 2rem;
+        }
+        
+        .details-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+        }
+        
+        .gallery-grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+        
+        .gallery-item {
+            height: 150px;
+        }
+    }
+</style>
+
+<div class="destination-container">
+    <!-- Cover Image -->
+    <div class="destination-cover">
+        <img class="img-fluid" src="{{ Storage::url('images/'. $destination->image) }}" alt="{{ $destination->name }}">
+    </div>
+
+    <!-- Content Section -->
+    <div class="destination-content">
+        <h1>{{ $destination->name }}</h1>
+        
+        <!-- Rating (if available) -->
+        @if($destination->rating)
+        <div class="review-rating">
+            @for($i = 1; $i <= 5; $i++)
+                @if($i <= round($destination->rating))
+                    ★
+                @else
+                    ☆
+                @endif
+            @endfor
+            ({{ number_format($destination->rating, 1) }}/5)
+        </div>
         @endif
-    });
+        
+        <p class="description">
+            {{ $destination->description }}
+        </p>
 
-    // Enhanced form submission with loading state
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+        <!-- Price (if numeric) -->
+        @if($destination->price > 0)
+            <div class="price">
+                <span>Price: {{ number_format($destination->price, 2) }} JD</span>
+            </div>
+        @endif
         
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalBtnText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+        <!-- Details Grid -->
+        <div class="details-grid">
+            <div class="detail-card">
+                <i class="fas fa-map-marker-alt detail-icon"></i>
+                <div>
+                    <h3>Location</h3>
+                    <p>{{ $destination->location ?? 'Downtown Salt, Jordan' }}</p>
+                </div>
+            </div>
+         
+            <div class="detail-card">
+                <i class="fas fa-info-circle detail-icon"></i>
+                <div>
+                    <h3>Place Type</h3>
+                    <p>{{ $destination->type ?? 'Historical Museum' }}</p>
+                </div>
+            </div>
+        </div>
         
-        fetch(this.action, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: new FormData(this)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Booking Confirmed!',
-                    html: `
-                        <p>${data.message}</p>
-                        <div class="alert alert-info mt-3 text-start">
-                            <h6>Booking Details:</h6>
-                            <p>Destination: ${document.querySelector('.card-title').textContent}</p>
-                            <p>Date: ${document.getElementById('booking_date').value}</p>
-                            <p>Total: ${document.querySelector('input[name="total_price"]').value} JOD</p>
+        <!-- Gallery Section -->
+        @if($destination->gallery && count($destination->gallery) > 0)
+        <div class="gallery">
+            <h2 class="gallery-title">Photo Gallery</h2>
+            <div class="gallery-grid">
+                @foreach($destination->gallery as $image)
+                <div class="gallery-item">
+                    <img src="{{ Storage::url('gallery/'. $image) }}" alt="Gallery Image">
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary">
+                <i class="fas fa-calendar-alt btn-icon"></i> Book a Visit
+            </button>
+           
+        </div>
+        <!-- Reviews Section -->
+<div class="reviews-section mt-5">
+    <h2 class="mb-4">Customer Reviews</h2>
+    
+    <!-- Display existing reviews -->
+    @if($destination->reviews && count($destination->reviews) > 0)
+        <div class="reviews-list">
+            @foreach($destination->reviews as $review)
+                <div class="review-card mb-4 p-4 border rounded">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="reviewer-name fw-bold">
+                            {{ $review->user->name ?? 'Anonymous' }}
                         </div>
-                    `,
-                    confirmButtonText: 'View Tickets',
-                    showCancelButton: true,
-                    cancelButtonText: 'Close'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = '/my-bookings';
-                    } else {
-                        window.location.reload();
-                    }
-                });
-            } else {
-                throw new Error(data.message || 'Booking failed. Please try again.');
-            }
-        })
-        .catch(error => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Booking Failed',
-                text: error.message,
-                confirmButtonText: 'Try Again'
-            });
-        })
-        .finally(() => {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnText;
-        });
-    });
-</script>
-@endsection
+                        <div class="review-date text-muted">
+                            {{ $review->created_at->format('d M Y') }}
+                        </div>
+                    </div>
+                    
+                    <div class="review-rating mb-2">
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= $review->rating)
+                                ★
+                            @else
+                                ☆
+                            @endif
+                        @endfor
+                    </div>
+                    
+                    <div class="review-comment">
+                        {{ $review->comment }}
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="alert alert-info">
+            No reviews yet. Be the first to review!
+        </div>
+    @endif
+    
+    <!-- Add new review form -->
+    <div class="add-review mt-5">
+        <h3 class="mb-3">Write a Review</h3>
+        
+        <form action="{{ route('reviews.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="destination_id" value="{{ $destination->id }}">
+            
+            <!-- Rating Stars -->
+            <div class="mb-3">
+                <label class="form-label">Your Rating</label>
+                <div class="rating-stars">
+                    @for($i = 5; $i >= 1; $i--)
+                        <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" {{ old('rating') == $i ? 'checked' : '' }}>
+                        <label for="star{{ $i }}">★</label>
+                    @endfor
+                </div>
+                @error('rating')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            
+            <!-- Comment -->
+            <div class="mb-3">
+                <label for="comment" class="form-label">Your Review</label>
+                <textarea class="form-control" id="comment" name="comment" rows="3" required>{{ old('comment') }}</textarea>
+                @error('comment')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </div>
+</div>
+    </div>
+</div>
+

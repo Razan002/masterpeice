@@ -65,7 +65,6 @@ class GeneralAdminController extends Controller
         }
     
 
-    // ... (الدا ش methods الأخرى تبقى كما هي حتى manageUsers)
 
     public function manageUsers(Request $request)
     {

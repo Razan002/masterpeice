@@ -1,53 +1,7 @@
 @include('components.app')
 
 
-{{-- <div class="admin-container">
-    
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <i class="fas fa-cogs me-2"></i>
-            Admin Dashboard
-        </div>
-        
-        <div class="px-3 py-4">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>الرئيسية</span>
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-                        <i class="fas fa-fw fa-users"></i>
-                        <span>Users</span>
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a href="{{ route('admin.packages') }}" class="nav-link {{ request()->routeIs('admin.packages*') ? 'active' : '' }}">
-                        <i class="fas fa-fw fa-box-open"></i>
-                        <span>الباقات</span>
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a href="{{ route('admin.bookings') }}" class="nav-link {{ request()->routeIs('admin.bookings*') ? 'active' : '' }}">
-                        <i class="fas fa-fw fa-calendar-check"></i>
-                        <span>الحجوزات</span>
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a href="{{ route('admin.reviews') }}" class="nav-link {{ request()->routeIs('admin.reviews*') ? 'active' : '' }}">
-                        <i class="fas fa-fw fa-star"></i>
-                        <span>التقييمات</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div> --}}
+
 
     <!-- المحتوى الرئيسي -->
     <div class="main-content">

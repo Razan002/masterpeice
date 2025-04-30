@@ -10,7 +10,9 @@ class CheckRole
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role === 'general_admin') {
+        if (\Illuminate\Support\Facades\Auth::check() && 
+            (\Illuminate\Support\Facades\Auth::user()->role === 'general_admin' || 
+             \Illuminate\Support\Facades\Auth::user()->role === 'product_owner')) {
             return $next($request);
         }
 

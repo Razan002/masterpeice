@@ -10,7 +10,7 @@ class Review extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'package_id', 'product_id', 'guide_id', 'rating', 'comment'
+        'user_id', 'package_id', 'product_id', 'guide_id', 'rating', 'comment', 'destination_id', 'booking_id'
     ];
 
     public function user()
@@ -28,9 +28,20 @@ class Review extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function destination()
+    {
+        return $this->belongsTo(Destination::class);
+    }
+
     public function guide()
     {
         return $this->belongsTo(User::class, 'guide_id');
+    }
+
+    // إضافة العلاقة بين المراجعة والحجز
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
     }
 
     public static function canReview($userId, $destinationId)

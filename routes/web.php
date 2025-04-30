@@ -8,7 +8,7 @@ use App\Http\Controllers\{
     HomeController,
     ProductController
 };
-// use App\Http\Controllers\ProductOwnerAdminController;
+use App\Http\Controllers\ProductOwnerAdminController;
 use App\Http\Controllers\GeneralAdminController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Auth\AuthController;
@@ -19,6 +19,11 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminPackagesController;
 use App\Http\Controllers\Admin\AdminBookingController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SpecialOfferController;
+use App\Http\Controllers\ReviewController;
+
+
 ;
 
 // tmp
@@ -27,7 +32,7 @@ Route::get('tmp', function () {
 })->name('tmp')->middleware(Custom::class);
 
 // Main Pages
-Route::get('/', [DestinationController::class, 'indexHome'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', function () { return view('about'); })->name('about');
 Route::get('/service', function () { return view('service'); })->name('service');
 Route::get('/booking', function () { return view('booking'); })->name('booking');
@@ -62,8 +67,9 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
+Route::get('/cart', [ProductController::class, 'cart'])->name('cart.index');
 
 Route::prefix('products')->name('product.')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index'); // product.index
@@ -116,4 +122,63 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/reviews/{id}', [GeneralAdminController::class, 'deleteReview'])->name('admin.reviews.destroy');
 });
 
- 
+
+Route::get('/cart', [ProductController::class, 'cart'])->name('cart'); // عرض صفحة السلة
+Route::post('/cart/add', [ProductController::class, 'addToCart'])->name('cart.add'); // إضافة عنصر للسلة
+Route::delete('/cart/remove/{id}', [ProductController::class, 'removeFromCart'])->name('cart.remove'); // حذف عنصر من السلة
+Route::patch('/cart/update/{id}', [ProductController::class, 'updateCart'])->name('cart.update');
+
+
+
+Route::middleware(['auth', 'role:product_owner'])->prefix('product-owner')->name('product_owner.')->group(function () {
+    Route::get('/dashboard', [ProductOwnerAdminController::class, 'dashboard'])->name('dashboard');
+    
+    // Routes لإدارة المنتجات
+    Route::middleware(['auth', 'role:product_owner'])->prefix('product-owner')->name('product_owner.')->group(function () {
+        Route::get('/dashboard', [ProductOwnerAdminController::class, 'dashboard'])->name('dashboard');
+        // مسارات المنتجات الأخرى (إضافة، تعديل، حذف)
+    });
+    
+
+});
+
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+
+Route::get('/checkout', [OrderController::class, 'create'])->name('checkout.create');
+Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
+Route::get('checkout/success', [OrderController::class, 'success'])->name('checkout.success');
+
+
+Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
+Route::get('/chec', [ProductController::class, 'cart'])->name('cart.index');
+
+Route::prefix('product-owner')->name('product_owner.')->group(function() {
+    
+    Route::resource('products', ProductOwnerAdminController::class)->names([
+        'index' => 'products.index',
+        'show' => 'products.show',
+        'create' => 'products.create',
+        'store' => 'products.store',
+        'edit' => 'products.edit',
+        'update' => 'products.update',
+        'destroy' => 'products.destroy',
+    ]);
+
+
+    Route::get('orders', [ProductOwnerAdminController::class, 'indexOrders'])->name('orders.index');
+    Route::get('orders/{id}', [ProductOwnerAdminController::class, 'showOrder'])->name('orders.show');
+});
+
+Route::resource('special-offers', SpecialOfferController::class);
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store')->middleware('auth');
+
+
+
+
+
+
+

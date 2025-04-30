@@ -21,17 +21,14 @@ class BookingController extends Controller
             'people_count' => 'required|integer|min:1',
         ]);
 
-        // التحقق من اختيار باقة أو وجهة
         if (!$request->package_id && !$request->destination_id) {
             return back()->with('error', 'يجب اختيار باقة أو وجهة!');
         }
 
         try {
-            // إذا كان الحجز لباقة
             if ($request->package_id) {
                 $package = Package::findOrFail($request->package_id);
                 
-                // التحقق من الحد الأقصى للأشخاص
                 $totalBookedPeople = Booking::where('package_id', $package->id)
                     ->where('booking_date', $request->booking_date)
                     ->sum('people_count');
@@ -49,21 +46,18 @@ class BookingController extends Controller
                 $base_price = $package->price;
                 $discount = $package->discount ?? 0;
             } 
-            // إذا كان الحجز لوجهة
             elseif ($request->destination_id) {
                 $destination = Destination::findOrFail($request->destination_id);
                 $base_price = $destination->price;
                 $discount = $destination->discount ?? 0;
             }
 
-            // حساب السعر مع الخصم
             if ($discount > 0) {
                 $base_price = $base_price * (1 - $discount / 100);
             }
 
             $total_price = $base_price * $request->people_count;
 
-            // إنشاء الحجز
             Booking::create([
                 'user_id' => Auth::id(),
                 'package_id' => $request->package_id,
@@ -75,7 +69,6 @@ class BookingController extends Controller
                 'status' => 'pending',
             ]);
 
-            // تحديث حالة الباقة إذا امتلأت بالكامل
             if ($request->package_id) {
                 $newTotalBooked = $totalBookedPeople + $request->people_count;
                 if ($newTotalBooked >= $package->max_people) {

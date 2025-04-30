@@ -21,4 +21,9 @@ class Destination extends Model
 {
     return $this->hasMany(SpecialOffer::class);
 }
+
+public function reviews()
+{
+    return $this->hasMany(Review::class, 'destination_id');
+}
 }

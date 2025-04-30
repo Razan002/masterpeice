@@ -58,7 +58,7 @@
                     <a href="{{ route('about') }}" class="nav-item nav-link" data-lang="about">About</a>
                     <a href="{{ route('package') }}" class="nav-item nav-link" data-lang="packages">Packages</a>
                     <a href="{{ route('shop') }}"class="nav-item nav-link">Shop</a>
-
+                    
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-lang="pages">Pages</a>
                         <div class="dropdown-menu m-0">
@@ -95,6 +95,10 @@
                     <a href="{{ route('login') }}" class="btn btn-primary rounded-pill py-2 px-4" data-lang="login">Login</a>
                 @endauth
             </div>
+                <!-- Cart Icon -->
+    <a href="{{ route('cart') }}" class="nav-item nav-link">
+        <i class="fas fa-shopping-cart"></i> <!-- Font Awesome Cart Icon -->
+    </a>
         </nav>
     </div>
     
