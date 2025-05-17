@@ -25,6 +25,8 @@ class AdminPackagesController extends Controller
     // عرض نموذج إنشاء باقة جديدة
     public function create()
     {
+
+        
         $guides = User::where('role', 'guide')->get();
         return view('admin.packages.create', compact('guides'));
     }
@@ -42,7 +44,7 @@ class AdminPackagesController extends Controller
         'price' => 'required|numeric|min:0',
         'date' => 'required|date',
         'start_time' => 'required',
-        'guide_id' => 'required|exists:users,id',
+        'guide_id' => 'nullable|required|exists:users,id',
         'end_time' => 'required',
         'meal' => 'required|string',
         // 'destination_id' => 'required|exists:destinations,id', // Ensure this field is validated
@@ -73,13 +75,13 @@ class AdminPackagesController extends Controller
         // 'day_of_week' => $request->day_of_week, // Adding the day_of_week field
     ]);
 
-    session()->flash('success', 'تمت إضافة الباقة بنجاح');
+    session()->flash('success', ' package created successfully');
     return redirect()->route('admin.packages.index');
 }
 
 
 
-    // عرض تفاصيل الباقة
+    // عرض تفاصيل 
     public function show(Package $package)
     {
         return view('admin.packages.show', compact('package'));
@@ -109,10 +111,9 @@ class AdminPackagesController extends Controller
         $package->update($validated);
         
         return redirect()->route('admin.packages.index')
-                       ->with('success', 'تم تحديث الباقة بنجاح');
+                       ->with('success', 'package updated successfully'); 
     }
 
-    // حذف الباقة
     public function destroy(Package $package)
     {
         if ($package->image) {
@@ -122,6 +123,6 @@ class AdminPackagesController extends Controller
         $package->delete();
 
         return redirect()->route('admin.packages.index')
-                       ->with('success', 'تم حذف الباقة بنجاح');
+                       ->with('success', ' package deleted successfully');
     }
 }

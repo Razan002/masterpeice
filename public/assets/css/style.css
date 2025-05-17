@@ -6,7 +6,7 @@
     --dark: #14141F;
 
     --header-link-color:#86B817; /* أضفنا متغير للون الأخضر */
-    --header-link-hover-color: white; /* أضفنا متغير للون الأبيض عند التمرير */
+    --header-link-hover-color: #86B817; /* أضفنا متغير للون الأبيض عند التمرير */
 }
 
 .fw-medium {
@@ -86,7 +86,7 @@
     position: relative;
     margin-right: 25px;
     padding: 35px 0;
-    color: var(--header-link-color) !important; تغيير اللون إلى الأخضر
+    color: var(--header-link-color) !important;    
     font-size: 18px;
     font-weight: 600;
     outline: none;
@@ -244,9 +244,9 @@
     transition: .5s;
 }
 
-.service-item:hover * {
+/* .service-item:hover * {
     color: var(--light) !important;
-}
+} */
 
 
 /*** Destination ***/
@@ -447,4 +447,149 @@
     margin-right: 0;
     padding-right: 0;
     border-right: none;
+}
+.product-section {
+    margin-top: 100px; /* غيّر الرقم حسب المسافة المطلوبة */
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.page-link {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #86B817;
+    text-decoration: none;
+}
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+}
+
+.static-pagination {
+    margin: 20px 0;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    color: #333;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color .3s;
+}
+
+.page-link:hover {
+    background-color: #eee;
+}
+
+.page-item.active .page-link {
+    background-color: #86B817;
+    color: white;
+    border: 1px solid #86B817;
+}
+/* Custom Pagination Styles */
+.horizontal-pagination-container {
+    position: relative;
+    width: 100%;
+}
+
+.horizontal-pagination {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 8px;
+    padding: 8px 0;
+    max-width: 300px;
+    margin: 0 auto;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+}
+
+.horizontal-pagination::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome/Safari */
+}
+
+.pagination-item {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    color: #212529;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6;
+}
+
+.pagination-item.active {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+.pagination-item:hover:not(.active) {
+    background-color: #e9ecef;
+}
+
+.scroll-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.scroll-btn:hover {
+    background-color: #e9ecef;
+}
+
+.scroll-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.horizontal-pagination-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background-color: #0d6efd;
+}
+
+.dot:hover:not(.active) {
+    background-color: #adb5bd;
 }

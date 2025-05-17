@@ -7,6 +7,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Booking;
 use App\Models\Review;
+use Illuminate\Database\Eloquent\Model;
+
+
 
 class User extends Authenticatable
 {
@@ -32,6 +35,7 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Review::class);
+
     }
 
     public function products()

@@ -70,11 +70,12 @@
             <div class="package-item">
                 <div class="overflow-hidden">
                     <a href="{{ route('product.show', $product->id) }}">
-                        <img class="img-fluid w-100" src="{{ Storage::url('images/'.$product->image) }}" alt="{{ $product->name }}">
+                       <img class="img-fluid w-100 "src="{{ asset('storage/' .$product->image) }}" alt="{{ $product->name }}">
                       
                     </a>
+                    
                 </div>
-                <div class="d-flex border-bottom">
+                {{-- <div class="d-flex border-bottom">
                     <small class="flex-fill text-center border-end py-2">
                         <i class="fa fa-map-marker-alt text-primary me-2"></i>
                         {{ $product->category->name }}
@@ -88,14 +89,14 @@
                         <i class="fa fa-box text-primary me-2"></i>
                         {{ $product->quantity }} in stock
                     </small>
-                </div>
+                </div> --}}
                 <div class="text-center p-4">
                     <h5 class="mb-2">{{ $product->name }}</h5>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         @for($i = 0; $i < 5; $i++)
                             <small class="fa fa-star text-primary"></small>
                         @endfor
-                    </div>
+                    </div> --}}
 
                     <div class="price-overlay">
                         <span class="price-badge">${{ number_format($product->price, 2) }}</span>
@@ -119,7 +120,7 @@
 
         <!-- Pagination -->
         <div class="row mt-5">
-            <div class="col-12">
+            <div class="d-flex justify-content-center mt-5">
                 {{ $products->links() }}
             </div>
         </div>
@@ -128,6 +129,8 @@
                 No products found matching your criteria.
             </div>
         @endif
+    </div>
+</div>
     </div>
 </div>
 

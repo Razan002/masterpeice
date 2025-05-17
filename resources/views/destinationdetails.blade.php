@@ -1,42 +1,34 @@
-
-
+@include('components.header')
 <style>
     /* Base Styles */
     :root {
-        --primary-color:  #6f991c;
-        --secondary-color:  #6f991c;
+        --primary-color: #6f991c;
+        --secondary-color: #6f991c;
         --accent-color: #e74c3c;
         --text-color: #333;
         --light-gray: #f5f5f5;
         --dark-gray: #777;
     }
     
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        color: var(--text-color);
-        background-color: #f9f9f9;
-        margin: 0;
-        padding: 0;
-    }
+ 
     
     /* Destination Container */
     .destination-container {
         max-width: 1200px;
-        margin: 4rem auto; /* زيادة الهامش العلوي */
+        margin: 4rem auto;
         background: white;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         display: flex;
-        flex-direction: row-reverse; /* جعل الصورة على اليمين */
+        flex-direction: row-reverse;
     }
     
     /* Cover Image */
     .destination-cover {
         position: relative;
         height: 400px;
-        width: 50%; /* جعل الصورة تأخذ نصف العرض */
+        width: 50%;
         overflow: hidden;
     }
     
@@ -54,8 +46,8 @@
     /* Content Section */
     .destination-content {
         padding: 2rem;
-        width: 50%; /* جعل المحتوى يأخذ نصف العرض */
-        margin-top: 2rem; /* تحريك المحتوى للأسفل */
+        width: 50%;
+        margin-top: 2rem;
     }
     
     h1 {
@@ -168,18 +160,69 @@
         background-color: #0a141c;
     }
     
-    .btn-secondary {
-        background-color: var(--secondary-color);
-        color: white;
+    /* Reviews Section Styles */
+    .reviews-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
     }
     
-    .btn-secondary:hover {
-        background-color: #27ae60;
+    .review-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease;
     }
     
-    .btn-icon {
-        margin-right: 0.8rem;
-        font-size: 1.1rem;
+    .review-card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .review-rating {
+        color: #ffc107;
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+    }
+    
+    .review-date {
+        color: var(--dark-gray);
+        font-size: 0.9rem;
+    }
+    
+    .review-comment {
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+    
+    .rating-stars {
+        direction: rtl;
+        unicode-bidi: bidi-override;
+    }
+    
+    .rating-stars input {
+        display: none;
+    }
+    
+    .rating-stars label {
+        font-size: 1.5rem;
+        color: #ddd;
+        cursor: pointer;
+        padding: 0 3px;
+    }
+    
+    .rating-stars input:checked ~ label,
+    .rating-stars label:hover,
+    .rating-stars label:hover ~ label {
+        color: #ffc107;
+    }
+    
+    .alert-info {
+        background-color: #e7f5ff;
+        color: #1864ab;
+        padding: 1rem;
+        border-radius: 8px;
     }
     
     /* Responsive Design */
@@ -225,7 +268,7 @@
     }
 </style>
 
-<div class="destination-container">
+<div class="destination-container" style="padding: 100px">
     <!-- Cover Image -->
     <div class="destination-cover">
         <img class="img-fluid" src="{{ Storage::url('images/'. $destination->image) }}" alt="{{ $destination->name }}">
@@ -294,87 +337,48 @@
         @endif
         
         <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="btn btn-primary">
-                <i class="fas fa-calendar-alt btn-icon"></i> Book a Visit
-            </button>
-           
-        </div>
-        <!-- Reviews Section -->
-<div class="reviews-section mt-5">
-    <h2 class="mb-4">Customer Reviews</h2>
-    
-    <!-- Display existing reviews -->
-    @if($destination->reviews && count($destination->reviews) > 0)
-        <div class="reviews-list">
-            @foreach($destination->reviews as $review)
-                <div class="review-card mb-4 p-4 border rounded">
-                    <div class="d-flex justify-content-between mb-3">
-                        <div class="reviewer-name fw-bold">
-                            {{ $review->user->name ?? 'Anonymous' }}
-                        </div>
-                        <div class="review-date text-muted">
-                            {{ $review->created_at->format('d M Y') }}
-                        </div>
-                    </div>
-                    
-                    <div class="review-rating mb-2">
-                        @for($i = 1; $i <= 5; $i++)
-                            @if($i <= $review->rating)
-                                ★
-                            @else
-                                ☆
-                            @endif
-                        @endfor
-                    </div>
-                    
-                    <div class="review-comment">
-                        {{ $review->comment }}
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @else
-        <div class="alert alert-info">
-            No reviews yet. Be the first to review!
-        </div>
-    @endif
-    
-    <!-- Add new review form -->
-    <div class="add-review mt-5">
-        <h3 class="mb-3">Write a Review</h3>
+       
         
-        <form action="{{ route('reviews.store') }}" method="POST">
+    
+    </div>
+    <!-- Booking Modal -->
+
+<div id="bookingModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+    <div class="modal-content" style="background-color: #fefefe; margin: 10% auto; padding: 2rem; border-radius: 12px; max-width: 600px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); direction: rtl; text-align: right;">
+        <span class="close-modal" style="float: left; font-size: 1.5rem; font-weight: bold; cursor: pointer;">&times;</span>
+        
+        <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">حجز زيارة إلى {{ $destination->name }}</h2>
+        
+        <form id="bookingForm" action="{{ route('bookings.store') }}" method="POST">
             @csrf
             <input type="hidden" name="destination_id" value="{{ $destination->id }}">
             
-            <!-- Rating Stars -->
-            <div class="mb-3">
-                <label class="form-label">Your Rating</label>
-                <div class="rating-stars">
-                    @for($i = 5; $i >= 1; $i--)
-                        <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" {{ old('rating') == $i ? 'checked' : '' }}>
-                        <label for="star{{ $i }}">★</label>
-                    @endfor
-                </div>
-                @error('rating')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">تاريخ الحجز</label>
+                <input type="date" name="booking_date" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;"
+                       min="{{ date('Y-m-d') }}">
             </div>
             
-            <!-- Comment -->
-            <div class="mb-3">
-                <label for="comment" class="form-label">Your Review</label>
-                <textarea class="form-control" id="comment" name="comment" rows="3" required>{{ old('comment') }}</textarea>
-                @error('comment')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">عدد الأشخاص</label>
+                <input type="number" name="people_count" min="1" value="2" required 
+                       style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
             </div>
             
-            <button type="submit" class="btn btn-primary">Submit Review</button>
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">طريقة الدفع</label>
+                <select name="payment_method" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+                    <option value="online">دفع إلكتروني</option>
+                    <option value="on_spot">دفع عند الوصول</option>
+                </select>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                <button type="button" class="close-modal" style="padding: 0.8rem 1.5rem; background: #ddd; border: none; border-radius: 8px; cursor: pointer;">إلغاء</button>
+                <button type="submit" style="padding: 0.8rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer;">تأكيد الحجز</button>
+            </div>
         </form>
     </div>
 </div>
-    </div>
 </div>
-
+@include('components.footer')

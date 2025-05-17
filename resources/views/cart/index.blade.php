@@ -56,32 +56,34 @@
                                 @foreach($cartItems as $item)
                                 <tr>
                                     <td>
-                                        <img src="{{ Storage::url('images/'.$item['image']) }}" 
+                                        <img src="{{  asset('storage/'.$item['image']) }}" 
                                              alt="{{ $item['name'] }}" 
                                              class="img-fluid rounded"
                                              style="width: 80px; height: 80px; object-fit: cover;">
+
+
+
+                                             
                                     </td>
                                     <td>
                                         <h6 class="mb-1">{{ $item['name'] }}</h6>
                                         <p class="small text-muted mb-0">{{ Str::limit($item['description'], 50) }}</p>
                                     </td>
-                                    <td>${{ number_format($item['price'], 2) }}</td>
+                                    <td>{{ number_format($item['price'], 2) }}</td>
                                     <td>
-                                        <form action="{{ route('cart.update', $item['id']) }}" method="POST" class="d-flex">
-                                            @csrf
-                                            @method('PATCH')
-                                            <input type="number" 
-                                                   name="quantity" 
-                                                   value="{{ $item['quantity'] }}" 
-                                                   min="1" 
-                                                   class="form-control form-control-sm" 
-                                                   style="width: 70px;">
-                                            <button type="submit" class="btn btn-sm btn-outline-primary ms-2">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                        </form>
+                                     <div class="d-flex align-items-center">
+    <button class="btn btn-sm btn-outline-secondary update-qty" data-id="{{ $item['id'] }}" data-type="decrease">-</button>
+    <input type="text" 
+           value="{{ $item['quantity'] }}" 
+           readonly 
+           class="form-control form-control-sm text-center mx-1 quantity-display" 
+           style="width: 50px;" 
+           data-id="{{ $item['id'] }}">
+    <button class="btn btn-sm btn-outline-secondary update-qty" data-id="{{ $item['id'] }}" data-type="increase">+</button>
+</div>
+
                                     </td>
-                                    <td>${{ number_format($item['total'], 2) }}</td>
+                                    <td class="item-total">JD{{ number_format($item['total'], 2) }}</td>
                                     <td>
                                         <form action="{{ route('cart.remove', $item['id']) }}" method="POST">
                                             @csrf
@@ -104,11 +106,11 @@
                     <i class="fas fa-arrow-left me-2"></i>Continue Shopping
                 </a>
               <a href="{{ route('checkout.create') }}" class="btn btn-primary">
-    Proceed to Checkout <i class="fas fa-arrow-right ms-2"></i>
-</a>
+                        Proceed to Checkout <i class="fas fa-arrow-right ms-2"></i>
+                       </a>
                 
-            </div>
-        </div>
+                         </div>
+                     </div>
         
         <div class="col-lg-4">
             <div class="card shadow-sm">
@@ -118,7 +120,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <span>Subtotal:</span>
-                        <span>${{ number_format(array_reduce($cartItems, function($carry, $item) {
+                        <span>JD{{ number_format(array_reduce($cartItems, function($carry, $item) {
                             return $carry + ($item['price'] * $item['quantity']);
                         }, 0), 2) }}</span>
                     </div>
@@ -128,21 +130,21 @@
                     </div>
                     <div class="d-flex justify-content-between mb-3">
                         <span>Tax:</span>
-                        <span>$0.00</span>
+                        <span>JD0.00</span>
                     </div>
                     <hr>
                     <div class="d-flex justify-content-between fw-bold fs-5">
                         <span>Total:</span>
-                        <span>${{ number_format(array_reduce($cartItems, function($carry, $item) {
+                        <span>JD{{ number_format(array_reduce($cartItems, function($carry, $item) {
                             return $carry + ($item['price'] * $item['quantity']);
                         }, 0), 2) }}</span>
                     </div>
                 </div>
                 <div class="card-footer bg-light">
-                    <div class="input-group mb-3">
+                    {{-- <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Promo code">
                         <button class="btn btn-primary" type="button">Apply</button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -153,7 +155,7 @@
             <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
             <h3 class="mb-3">Your cart is empty</h3>
             <p class="text-muted mb-4">Looks like you haven't added any items to your cart yet</p>
-            <a href="{{ route('checkout.success') }}" class="btn btn-primary px-4">
+            <a href="{{  route('shop') }}" class="btn btn-primary px-4">
                 <i class="fas fa-store me-2"></i> Start Shopping
             </a>
         </div>
@@ -181,3 +183,38 @@
         border-radius: 0 !important;
     }
 </style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.update-qty').click(function () {
+            var productId = $(this).data('id');
+            var type = $(this).data('type');
+            var quantityInput = $('.quantity-display[data-id="' + productId + '"]');
+            var currentQuantity = parseInt(quantityInput.val());
+
+            var newQuantity = (type === 'increase') ? currentQuantity + 1 : currentQuantity - 1;
+
+            if (newQuantity < 1) return;
+
+            $.ajax({
+                url: '/cart/update/' + productId,
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    quantity: newQuantity
+                },
+                success: function (response) {
+                    if (response.success) {
+                        quantityInput.val(newQuantity);
+                        quantityInput.closest('tr').find('.item-total').text('JD' + response.item_total);
+                        location.reload(); // لتحديث السعر الإجمالي
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+

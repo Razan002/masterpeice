@@ -1,10 +1,10 @@
 @include('components.app')
 
-<div class="container py-5">
+<div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-5">
-        <h1 class="h2 text-dark fw-bold">إدارة الباقات السياحية</h1>
+        <h1 class="h2 text-dark fw-bold">Tour Packages Management</h1>
         <a href="{{ route('admin.packages.create') }}" class="btn btn-primary btn-lg shadow-sm">
-            <i class="fas fa-plus me-2"></i> إضافة باقة جديدة
+            <i class="fas fa-plus me-2"></i> Add New Package
         </a>
     </div>
 
@@ -19,11 +19,11 @@
     @if($packages->isEmpty())
         <div class="text-center py-5 my-5">
             <div class="empty-state">
-                <img src="{{ asset('images/empty-packages.svg') }}" alt="لا توجد باقات" style="height: 180px;" class="mb-4">
-                <h3 class="h4">لا توجد باقات متاحة حالياً</h3>
-                <p class="text-muted mb-4">يمكنك البدء بإضافة باقات سياحية جديدة لعرضها هنا</p>
+                <img src="{{ asset('images/empty-packages.svg') }}" alt="No packages available" style="height: 180px;" class="mb-4">
+                <h3 class="h4">No Packages Available</h3>
+                <p class="text-muted mb-4">You can start by adding new tour packages to display here</p>
                 <a href="{{ route('admin.packages.create') }}" class="btn btn-primary px-4 shadow-sm">
-                    <i class="fas fa-plus me-2"></i> إضافة باقة جديدة
+                    <i class="fas fa-plus me-2"></i> Add New Package
                 </a>
             </div>
         </div>
@@ -48,7 +48,7 @@
                         
                         <div class="package-destination mb-2">
                             <i class="fas fa-map-marker-alt text-danger me-1"></i>
-                            <small>{{ $package->destination?->name ?? 'وجهات متعددة' }}</small>
+                            <small>{{ $package->destination?->name ?? 'Multiple Destinations' }}</small>
                         </div>
                         
                         <p class="card-text text-muted">{{ Str::limit($package->description, 90) }}</p>
@@ -56,16 +56,16 @@
                         <div class="package-features mb-3">
                             <div class="feature-item">
                                 <i class="fas fa-user-friends"></i>
-                                <span>{{ $package->max_people }} أشخاص</span>
+                                <span>{{ $package->max_people }} People</span>
                             </div>
                             <div class="feature-item">
                                 <i class="fas fa-utensils"></i>
-                                <span>{{ $package->meal ?? 'لا يشمل وجبات' }}</span>
+                                <span>{{ $package->meal ?? 'No meals included' }}</span>
                             </div>
                             @if($package->has_hotel)
                             <div class="feature-item">
                                 <i class="fas fa-hotel"></i>
-                                <span>يشمل فندق</span>
+                                <span>Includes hotel</span>
                             </div>
                             @endif
                         </div>
@@ -73,24 +73,24 @@
                         <div class="price-container mt-auto">
                             <div class="price-wrapper">
                                 <span class="price">{{ number_format($package->price) }}</span>
-                                <span class="currency">دينار</span>
+                                <span class="currency">Dinar</span>
                             </div>
                             <div class="duration">
                                 <i class="fas fa-clock"></i>
-                                <span>{{ $package->duration }} أيام</span>
+                                <span>{{ $package->duration }} Days</span>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-between gap-2">
                             <a href="{{ route('admin.packages.edit', $package->id) }}" class="btn btn-action btn-edit w-50">
-                                <i class="fas fa-edit me-1"></i> تعديل
+                                <i class="fas fa-edit me-1"></i> Edit
                             </a>
                             <form action="{{ route('admin.packages.destroy', $package->id) }}" method="POST" class="w-50">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-action btn-delete w-100" onclick="return confirm('هل أنت متأكد من حذف هذه الباقة؟')">
-                                    <i class="fas fa-trash me-1"></i> حذف
+                                <button type="submit" class="btn btn-action btn-delete w-100" onclick="return confirm('Are you sure you want to delete this package?')">
+                                    <i class="fas fa-trash me-1"></i> Delete
                                 </button>
                             </form>
                         </div>
@@ -107,7 +107,7 @@
 </div>
 
 <style>
-    /* تنسيقات عامة للكروت */
+    /* General card styling */
     .package-card {
         border: none;
         border-radius: 12px;
@@ -126,7 +126,7 @@
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
-    /* تنسيق صورة الباقة */
+    /* Package image styling */
     .card-img-container {
         height: 160px;
         overflow: hidden;
@@ -154,7 +154,7 @@
         transform: scale(1.1);
     }
 
-    /* شريط نوع الباقة */
+    /* Package type badge */
     .package-type {
         position: absolute;
         top: 12px;
@@ -169,7 +169,7 @@
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
-    /* تنسيق محتوى الكارت */
+    /* Card content styling */
     .card-body {
         padding: 16px;
         flex-grow: 1;
@@ -209,7 +209,7 @@
         overflow: hidden;
     }
 
-    /* تنسيقات الميزات */
+    /* Features styling */
     .package-features {
         display: flex;
         flex-wrap: wrap;
@@ -233,7 +233,7 @@
         color: #4361ee;
     }
 
-    /* تنسيق السعر */
+    /* Price styling */
     .price-container {
         display: flex;
         justify-content: space-between;
@@ -271,7 +271,7 @@
         margin-left: 4px;
     }
 
-    /* تنسيقات الأزرار */
+    /* Button styling */
     .card-footer {
         background: #f8f9fa;
         border-top: 1px solid #e9ecef;
@@ -292,11 +292,11 @@
 
     .btn-edit {
         background: rgba(67, 97, 238, 0.1);
-        color: #4361ee;
+        color: #91c62e;
     }
 
     .btn-edit:hover {
-        background: #4361ee;
+        background:  #91c62e;
         color: white;
     }
 
@@ -310,13 +310,13 @@
         color: white;
     }
 
-    /* حالة عدم وجود بيانات */
+    /* Empty state styling */
     .empty-state {
         max-width: 500px;
         margin: 0 auto;
     }
 
-    /* تأثيرات الظهور */
+    /* Animation effects */
     .package-item {
         animation: fadeInUp 0.5s ease forwards;
     }
@@ -332,7 +332,7 @@
         }
     }
 
-    /* التجاوب مع الشاشات الصغيرة */
+    /* Responsive for small screens */
     @media (max-width: 768px) {
         .card-img-container {
             height: 140px;

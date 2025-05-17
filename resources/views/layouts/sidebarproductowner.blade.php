@@ -83,7 +83,6 @@
     <!-- قسم المستخدم -->
     <div class="sidebar-footer p-3 border-top position-absolute bottom-0 w-100">
         <div class="d-flex align-items-center">
-            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="صورة المستخدم">
             <div>
                 <small class="d-block">مالك المنتجات</small>
                 <a href="#" class="text-white"><small>تسجيل الخروج</small></a>

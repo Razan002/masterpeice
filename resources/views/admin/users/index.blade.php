@@ -37,8 +37,8 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone ?? 'N/A' }}</td>
                             <td>
-                                <span class="status-badge {{ $user->role == 'general_admin' ? 'success' : ($user->role == 'general_owner' ? 'primary' : 'warning') }}">
-                                    {{ $user->role_name }}
+                                <span class="status-badge {{ $user->role == 'general_admin' ? 'success' : ($user->role == 'product_owner' ? 'secondary' :   ($user->role == 'guide' ? 'primary' : 'warning'))  }}">
+                                    {{ $user->role == 'general_admin' ? 'Admin' : ($user->role == 'product_owner' ? 'product_Owner' : ($user->role == 'guide' ? 'Guide' : ($user->role == 'User' ? 'user' : ''))) }}                                    {{ $user->role_name }}
                                 </span>
                             </td>
                             <td>
@@ -74,6 +74,11 @@
 .status-badge.success {
     background-color: #d1fae5;
     color: #065f46;
+}
+
+.status-badge.secondary {
+    background-color: #f4d1fa;
+    color: #06204d;
 }
 
 .status-badge.primary {

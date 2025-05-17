@@ -2,16 +2,16 @@
     <!-- Sidebar Title -->
     <div class="sidebar-brand">
         <i class="fas fa-cogs me-2"></i>
-        Admin Dashboard
+        <h3>{{ Auth::user()->name }}</h3>
     </div>
     
     <!-- Navigation Menu -->
-    <div class="px-3 py-4">
+    <div class="sidebar-menu">
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Home</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
             
@@ -28,27 +28,37 @@
                     <span>Packages</span>
                 </a>
             </li>
+
+            {{-- <li class="nav-item">
+                <a href="{{ route('admin.destinations.index') }}" class="nav-link {{ request()->routeIs('admin.destinations*') ? 'active' : '' }}">
+                    <i class="fas fa-fw fa-map-marker-alt"></i>
+                    <span>Destinations</span>
+                </a>
+            </li> --}}
             
             <li class="nav-item">
                 <a href="{{ route('admin.bookings') }}" class="nav-link {{ request()->routeIs('admin.bookings*') ? 'active' : '' }}">
-                    <i class="fas fa-fw fa-tags"></i>
+                    <i class="fas fa-fw fa-calendar-check"></i>
                     <span>Bookings</span>
                 </a>
             </li>
             
             <li class="nav-item">
                 <a href="{{ route('admin.reviews') }}" class="nav-link {{ request()->routeIs('admin.reviews') ? 'active' : '' }}">
-                    <i class="fas fa-fw fa-shopping-cart"></i>
+                    <i class="fas fa-fw fa-star"></i>
                     <span>Reviews</span>
                 </a>
             </li>
-{{--             
-            <li class="nav-item">
-                <a href="{{ route('admin.settings') }}" class="nav-link {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Settings</span>
+
+            <li class="nav-item mt-4">
+                <a href="{{ route('logout') }}" class="nav-link text-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
                 </a>
-            </li> --}}
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </li>
         </ul>
     </div>
 </div>

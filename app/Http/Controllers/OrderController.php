@@ -9,15 +9,19 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth'); // تأكد من أن المستخدم مسجل الدخول
+    }
     /**
      * Show the checkout page with cart details.
      */
     public function create()
 {
-    // جلب السلة الخاصة بالمستخدم
     $cart = session()->get('cart', []);
     
-    // التأكد من أن السلة ليست فارغة
+
     if (empty($cart)) {
         return redirect()->route('cart.index')->with('error', 'سلتك فارغة!');
     }

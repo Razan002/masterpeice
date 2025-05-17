@@ -26,13 +26,13 @@
                         </small>
                     </div>
                     <div class="text-center p-4">
-                        <h3 class="mb-0">{{ $package->price }}$</h3>
-                        <div class="mb-3">
+                        <h3 class="mb-0">{{ $package->price }}JD</h3>
+                        {{-- <div class="mb-3">
                             @for ($i = 0; $i < 5; $i++)
                                 <small class="fa fa-star {{ $i < $package->rating ? 'text-primary' : 'text-muted' }}"></small>
                             @endfor
-                        </div>
-                        <p>{{ Str::limit($package->description, 100) }}</p>
+                        </div> --}}
+                        <p>{{ Str::limit($package->description, 50) }}</p>
                         <div class="d-flex justify-content-center mb-2">
                             <a href="{{ route('detailspackages', $package->id) }}" class="btn btn-sm btn-primary px-3" style="border-radius: 30px;">
                                 Read More

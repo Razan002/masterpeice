@@ -29,11 +29,11 @@
                     <div class="position-relative d-block overflow-hidden">
                         <a href="{{ route('destination.show', $destination->id) }}">
                             <img class="img-fluid" src="{{ Storage::url('images/'. $destination->image) }}" alt="{{ $destination->name }}">
-                            <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">
+                            {{-- <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">
                                 @if($destination->discount)
                                     {{ $destination->discount }}% OFF
                                 @endif
-                            </div>
+                            </div> --}}
                             <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">
                                 {{ $destination->name }}
                             </div>

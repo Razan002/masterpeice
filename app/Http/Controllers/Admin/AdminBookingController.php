@@ -75,7 +75,7 @@ class AdminBookingController extends Controller
             Booking::create($validated);
         });
 
-        return redirect()->route('admin.bookings.index')
+        return redirect()->route('admin.bookings')
             ->with('success', 'تم إنشاء الحجز بنجاح');
     }
 
@@ -84,7 +84,7 @@ class AdminBookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        return view('admin.bookings.show', compact('booking'));
+        return view('admin.booking.show', compact('booking'));
     }
 
     /**
@@ -96,13 +96,13 @@ class AdminBookingController extends Controller
         $packages = Package::select('id', 'title')->get();
         $destinations = Destination::select('id', 'name')->get();
 
-        return view('admin.bookings.edit', compact('booking', 'users', 'packages', 'destinations'));
-    }
+        return view('admin.booking.edit', compact('booking', 'users', 'packages', 'destinations'));    }
 
     /**
      * تحديث بيانات الحجز في قاعدة البيانات
      */
     public function update(Request $request, Booking $booking)
+
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -119,7 +119,7 @@ class AdminBookingController extends Controller
             $booking->update($validated);
         });
 
-        return redirect()->route('admin.bookings.index')
+        return redirect()->route('admin.bookings')
             ->with('success', 'تم تحديث الحجز بنجاح');
     }
 
@@ -132,7 +132,7 @@ class AdminBookingController extends Controller
             $booking->delete();
         });
 
-        return redirect()->route('admin.bookings.index')
+        return redirect()->route('admin.bookings')
             ->with('success', 'تم حذف الحجز بنجاح');
     }
 

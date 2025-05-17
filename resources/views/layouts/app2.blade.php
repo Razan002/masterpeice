@@ -204,23 +204,23 @@
                 </li>
                 
                 <li class="{{ request()->routeIs('product_owner.products*') ? 'active' : '' }}">
-                    <a href="#productsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-box-open"></i>
+                <a href="{{ route('product_owner.products.index') }}">                        
+                    <i class="fas fa-box-open"></i>
                         <span>Products</span>
                     </a>
                     <ul class="collapse list-unstyled" id="productsSubmenu">
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('product_owner.products.index') }}">
                                 <i class="fas fa-list"></i>
                                 Product List
                             </a>
-                        </li>
-                        <li>
+                        </li> --}}
+                        {{-- <li>
                             <a href="{{ route('product_owner.products.create') }}">
                                 <i class="fas fa-plus-circle"></i>
                                 Add New Product
                             </a>
-                        </li>
+                        </li> --}}
                         {{-- <li>
                             <a href="{{ route('product_owner.products.low-stock') }}">
                                 <i class="fas fa-exclamation-triangle"></i>
@@ -231,17 +231,16 @@
                 </li>
                 
                 <li class="{{ request()->routeIs('product_owner.orders*') ? 'active' : '' }}">
-                    <a href="#ordersSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-shopping-cart"></i>
+ <a href="{{ route('product_owner.orders.index') }}" class="dropdown-item">                        <i class="fas fa-shopping-cart"></i>
                         <span>Orders</span>
                     </a>
                     <ul class="collapse list-unstyled" id="ordersSubmenu">
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('product_owner.orders.index') }}" class="dropdown-item">
                                 <i class="fas fa-shopping-cart"></i>
                                 <span>All Orders</span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li>
                             {{-- <a href="{{ route('product_owner.orders.pending') }}">
                                 <i class="fas fa-clock"></i>
@@ -258,10 +257,10 @@
                 </li>
                 
                 <li class="{{ request()->routeIs('product_owner.sales*') ? 'active' : '' }}">
-                    <a href="#salesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    {{-- <a href="#salesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fas fa-chart-line"></i>
                         <span>Reports & Sales</span>
-                    </a>
+                    </a> --}}
                     <ul class="collapse list-unstyled" id="salesSubmenu">
                         <li>
                             {{-- <a href="{{ route('product_owner.sales.daily') }}">
@@ -318,28 +317,27 @@
                     
                     <div class="d-flex align-items-center">
                         <div class="dropdown ms-3">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{-- <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-bell"></i>
                                 <span class="badge bg-danger">3</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                            </button> --}}
+                            {{-- <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
                                 <li><h6 class="dropdown-header">Recent Notifications</h6></li>
                                 <li><a class="dropdown-item" href="#">New Order #1254</a></li>
                                 <li><a class="dropdown-item" href="#">New Review for Your Product</a></li>
                                 <li><a class="dropdown-item" href="#">Low Stock for "Olive Oil"</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-primary" href="#">View All Notifications</a></li>
-                            </ul>
+                            </ul> --}}
                         </div>
                         
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{-- <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user-circle me-1"></i>
                                 {{ Auth::user()->name }}
-                            </button>
+                            </button> --}}
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 {{-- <li><a class="dropdown-item" href="{{ route('product_owner.profile') }}"><i class="fas fa-user me-1"></i> Profile</a></li> --}}
-                                {{-- <li><a class="dropdown-item" href="{{ route('product_owner.settings') }}"><i class="fas fa-cog me-1"></i> Settings</a></li> --}}
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

@@ -45,23 +45,23 @@
 </style>
 
 <div class="container py-5 profile-container">
-    <!-- معلومات المستخدم -->
+    <!-- User Information -->
     <div class="card profile-card mb-4 text-center">
         <div class="card-body">
             <h3>{{ $user->name }}</h3>
             <p class="text-muted">{{ $user->email }}</p>
-            <p>{{ $user->phone ?? 'لا يوجد رقم' }}</p>
+            <p>{{ $user->phone ?? 'No phone number available' }}</p>
             <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                تعديل المعلومات
+                Edit Information
             </button>
         </div>
     </div>
 
-    <!-- الحجوزات -->
-    <h4 class="mb-3">حجوزاتي</h4>
+    <!-- Bookings -->
+    <h4 class="mb-3">My Bookings</h4>
 
     @if($bookings->isEmpty())
-        <div class="alert alert-info text-center py-4">لا توجد حجوزات حتى الآن</div>
+        <div class="alert alert-info text-center py-4">No bookings yet</div>
     @else
         <div class="row">
             @foreach($bookings as $booking)
@@ -75,25 +75,25 @@
                                     {{ $booking->destination->name }}
                                 @endif
                             </h5>
-                            <p class="mb-1"><strong>التاريخ:</strong> {{ \Carbon\Carbon::parse($booking->booking_date)->format('Y-m-d') }}</p>
-                            <p class="mb-1"><strong>السعر:</strong> {{ $booking->total_price }} JOD</p>
+                            <p class="mb-1"><strong>Date:</strong> {{ \Carbon\Carbon::parse($booking->booking_date)->format('Y-m-d') }}</p>
+                            <p class="mb-1"><strong>Price:</strong> {{ $booking->total_price }} JOD</p>
                             <p class="mb-2">
-                                <span class="badge
+                                {{-- <span class="badge
                                     @if($booking->status == 'confirmed') bg-success
                                     @elseif($booking->status == 'cancelled') bg-danger
                                     @else bg-warning @endif">
                                     {{ $booking->status }}
-                                </span>
+                                </span> --}}
                             </p>
 
                             @if($booking->status != 'cancelled' && now()->diffInDays($booking->booking_date) >= 2)
-                                <form action="{{ route('profile.booking.cancel', $booking->id) }}" method="POST" class="d-inline">
+                                {{-- <form action="{{ route('profile.booking.cancel', $booking->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-outline-danger"
-                                        onclick="return confirm('هل أنت متأكد من إلغاء هذا الحجز؟')">
-                                        إلغاء الحجز
+                                        onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                        Cancel Booking
                                     </button>
-                                </form>
+                                </form> --}}
                             @endif
                         </div>
                     </div>
@@ -103,33 +103,33 @@
     @endif
 </div>
 
-<!-- Modal تعديل المعلومات -->
+<!-- Edit Profile Modal -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="{{ route('profile.update') }}">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editProfileModalLabel">تعديل المعلومات</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">الاسم الكامل</label>
+                        <label class="form-label">Full Name</label>
                         <input type="text" name="name" class="form-control" value="{{ $user->name }}">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">البريد الإلكتروني</label>
+                        <label class="form-label">Email Address</label>
                         <input type="email" name="email" class="form-control" value="{{ $user->email }}">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">رقم الهاتف</label>
+                        <label class="form-label">Phone Number</label>
                         <input type="text" name="phone" class="form-control" value="{{ $user->phone ?? '' }}">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-                    <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
             </form>
         </div>

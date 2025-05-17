@@ -89,7 +89,7 @@ class UserAdminController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('admin.users')
+        return redirect()->route('admin.users.index')
                        ->with('success', 'User updated successfully!');
     }
 

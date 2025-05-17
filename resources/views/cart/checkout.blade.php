@@ -128,12 +128,12 @@
 
 <style>
     :root {
-        --primary-color: #4361ee;
-        --secondary-color: #3f37c9;
-        --accent-color: #4895ef;
+        --primary-color:#86B817;
+        --secondary-color: #161439;
+        --accent-color:#86B817;
         --dark-color: #2b2d42;
         --light-color: #f8f9fa;
-        --success-color: #4cc9f0;
+        --success-color: #86B817;
         --text-color: #495057;
         --border-radius: 12px;
         --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);

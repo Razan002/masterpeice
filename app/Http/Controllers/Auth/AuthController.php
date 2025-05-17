@@ -44,7 +44,8 @@ class AuthController extends Controller
         }
     
         return back()->withErrors([
-            'email' => 'بيانات الاعتماد هذه غير متطابقة مع سجلاتنا.',
+            'email' => '    invalid Email .',
+            'password' => 'incorrect password.',
         ]);
     }
     
@@ -57,40 +58,57 @@ class AuthController extends Controller
     }
 
     // عملية التسجيل
-    public function register(Request $request)
-    {
-        // التحقق من المدخلات
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'phone' => 'required',
-        ]);
+public function register(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'phone' => ['required', 'regex:/^07[0-9]{8}$/'],
+    ], [
+        'phone.regex' => 'The phone number must start with 07 and contain exactly 10 digits.',
+        'password.min' => 'The password must be at least 8 characters.',
+        'password.confirmed' => 'The password confirmation does not match.',
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+    $validator->after(function ($validator) use ($request) {
+        $password = $request->password;
+
+        if (!preg_match('/^[A-Z]/', $password)) {
+            $validator->errors()->add('password', 'The password must start with an uppercase letter.');
         }
 
-        // إنشاء مستخدم جديد
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->address = $request->address;
-        $user->phone = $request->phone;
-        $user->password = Hash::make($request->password);
-        $user->save();
+        if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+            $validator->errors()->add('password', 'The password must contain at least one special character.');
+        }
 
-        // تسجيل الدخول بعد النجاح
-        Auth::login($user);
+        if (!preg_match('/[0-9]/', $password)) {
+            $validator->errors()->add('password', 'The password must contain at least one number.');
+        }
 
-        return redirect('/home');
+        preg_match_all('/[a-z]/', $password, $lowercaseMatches);
+        if (count($lowercaseMatches[0]) < 5) {
+            $validator->errors()->add('password', 'The password must contain at least 5 lowercase letters.');
+        }
+    });
+
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
-    // عملية تسجيل الخروج
-    public function logout()
-    {
-        Auth::logout();
-        return redirect('/');
-    }
+    // إنشاء المستخدم
+    $user = new User;
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->address = $request->address;
+    $user->phone = $request->phone;
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    Auth::login($user);
+
+    return redirect('/home');
 }
+}
+

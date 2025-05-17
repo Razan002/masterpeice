@@ -6,6 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
 
     <!-- Favicon -->
     <link href="{{ asset('assets/img/favicon.ico') }}" rel="icon">
@@ -18,7 +20,7 @@
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Libraries Stylesheet -->
     <link href="{{ asset('lib/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
@@ -31,7 +33,7 @@
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <!-- Sweet Alert CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -46,29 +48,30 @@
     <!-- Navbar & Hero Start -->
     <div class="container-fluid position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-            <a href="" class="navbar-brand p-0">
-                <h1 class="text-primary m-0"><i class="fa fa-map-marker-alt me-3"></i>Saltist</h1>
-            </a>
+            <a href="{{ route('home') }}" class="navbar-brand p-0">
+                <h1 class="text-primary m-0">
+                    <img src="/assets/img/saltist.jpg" alt="Saltist Logo" class="me-3" style="height: 1.2em;">Saltist
+                </h1>            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
                     <a href="{{ route('home') }}" class="nav-item nav-link active" data-lang="home">Home</a>
-                    <a href="{{ route('about') }}" class="nav-item nav-link" data-lang="about">About</a>
+                    <a href="{{ route('destination.index') }}" class="nav-item nav-link" data-lang="about">Destination</a>
                     <a href="{{ route('package') }}" class="nav-item nav-link" data-lang="packages">Packages</a>
                     <a href="{{ route('shop') }}"class="nav-item nav-link">Shop</a>
-                    
+{{--                     
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-lang="pages">Pages</a>
                         <div class="dropdown-menu m-0">
-                            <a href="{{ route('destination.index') }}" class="dropdown-item" data-lang="destination">Destination</a>
+                            
                             <a href="{{ route('booking') }}" class="dropdown-item" data-lang="booking">Booking</a>
                             <a href="team.html" class="dropdown-item" data-lang="guides">Travel Guides</a>
                             <a href="testimonial.html" class="dropdown-item" data-lang="testimonial">Testimonial</a>
-                            <a href="404.html" class="dropdown-item" data-lang="error">404 Page</a>
+                            
                         </div>
-                    </div>
+                    </div> --}}
                     <a href="{{ route('contacts') }}" class="nav-item nav-link" data-lang="contact">Contact</a>
                 </div>
     
@@ -101,4 +104,80 @@
     </a>
         </nav>
     </div>
+
+    <script>
+        @if(session('success'))
+   
+        Swal.fire({
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: true,
+            confirmButtonText: 'موافق',
+            timer: 3000
+        }).then((result) => {
+           
+        });
     
+@endif
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('bookingModal');
+            const btn = document.getElementById('bookNowBtn');
+            const closeBtns = document.querySelectorAll('.close-modal');
+            
+            // عند الضغط على زر الحجز
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+            
+            // عند الضغط على زر الإغلاق
+            closeBtns.forEach(function(closeBtn) {
+                closeBtn.onclick = function() {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // إغلاق النافذة عند الضغط خارجها
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            
+            
+            // تحديد أن التاريخ لا يمكن أن يكون قبل اليوم
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelector('input[name="booking_date"]').min = today;
+            
+            // إرسال بيانات الحجز
+            document.getElementById('bookingForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        alert('تم الحجز بنجاح!');
+                        modal.style.display = 'none';
+                        window.location.reload();
+                    } else {
+                        alert('خطأ: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert  ('تم الحجز بنجاح')
+                });
+            });
+        });
+        </script>
+
+        
+        
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

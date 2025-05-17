@@ -149,27 +149,28 @@ button:hover {
 <body>
   <div class="wrapper">
 <form action="{{ route('loginn') }}" method="POST">
-  @csrf  <!-- Laravel CSRF token for security -->
-  <h2>Login</h2>
+   @csrf
+
   <div class="input-field">
-    <p style="color: #ccc "  >Enter your email</p>
-      <input type="text" name="email" required>
-     
+    <p style="color: #ccc">Enter your email</p>
+    <input type="text" name="email" value="{{ old('email') }}" required>
+    @error('email')
+      <p style="color: red; font-size: 14px;">{{ $message }}</p>
+    @enderror
   </div>
+
   <div class="input-field">
-    <p style="color: #ccc "  >Enter your password</p>
-      <input type="password" name="password" required>
-      
+    <p style="color: #ccc">Enter your password</p>
+    <input type="password" name="password" required>
+    @error('password')
+      <p style="color: red; font-size: 14px;">{{ $message }}</p>
+    @enderror
   </div>
-  <div class="forget">
-      <label for="remember">
-          <input type="checkbox" id="remember" name="remember">
-          <p>Remember me</p>
-      </label>
-      <a href="#">Forgot password?</a>
-  </div>
-  <button type="submit">Log In</button>
+
+  <button type="submit" class="btn">Login</button>
+
   <div class="register">
-      <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>
+    <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>
   </div>
 </form>
+

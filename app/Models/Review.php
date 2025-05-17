@@ -44,6 +44,14 @@ class Review extends Model
         return $this->belongsTo(Booking::class);
     }
 
+    // app/Models/User.php
+
+public function order()
+{
+    return $this->hasMany(Order::class);
+}
+
+
     public static function canReview($userId, $destinationId)
     {
         return Booking::where('user_id', $userId)
@@ -59,4 +67,5 @@ class Review extends Model
                     ->where('status', 'confirmed')
                     ->first();
     }
+    
 }

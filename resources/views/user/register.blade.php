@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +8,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* أي تعديلات على CSS هنا */
+        /* Custom CSS adjustments here */
     </style>
 </head>
 <body>
-    <nav style=" background-color: #f8f9fa; position: relative; top: -100px; width:100%; text-align: center;">
-        <a href="{{ route('index') }}" style=" font-size: 40px; text-decoration: none; color:#000">Hellow</a>
+    <nav style="background-color: #f8f9fa; position: relative; top: -100px; width:100%; text-align: center;">
+        <a href="{{ route('index') }}" style="font-size: 40px; text-decoration: none; color:#000">Hello</a>
     </nav>
+
     <div class="profile-container">
         <form method="POST" id="registerForm" action="{{ route('registerr') }}">
             @csrf
@@ -32,6 +33,7 @@
                     </div>
                     @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Email:</label>
                     <div class="input-group">
@@ -40,8 +42,9 @@
                     </div>
                     @error('email') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
+
                 <div class="form-group">
-                    <label class="form-label">Phone:</label>
+                    <label class="form-label">Phone Number:</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
                         <input name="phone" type="tel" id="phone" class="form-control">
@@ -59,6 +62,7 @@
                     </div>
                     @error('password') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Confirm Password:</label>
                     <div class="input-group">
@@ -67,6 +71,7 @@
                     </div>
                     @error('password_confirmation') <small class="text-danger">{{ $message }}</small> @enderror
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Address:</label>
                     <div class="input-group">
@@ -77,13 +82,13 @@
                 </div>
             </div>
 
-            <div class="input-group">
-                <button style="background-color: #6fa007;color:white" type="submit" class="btn w-100">
+            <div class="input-group mt-3">
+                <button style="background-color: #6fa007; color: white;" type="submit" class="btn w-100">
                     <i class="fas fa-user-plus"></i> Register
                 </button>
             </div>
 
-            <p class="text-center mt-3">I already have an account? <a href="" class="text-login">Login</a></p>
+            <p class="text-center mt-3">Already have an account? <a href="" class="text-login">Login</a></p>
         </form>
     </div>
 

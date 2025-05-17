@@ -4,7 +4,7 @@
     <div class="container">
         <h1 class="display-5 mb-4">إنشاء حجز جديد</h1>
         
-        <form action="{{ route('bookings.store') }}" method="POST">
+        <form action="{{ route('admin.bookings.store') }}" method="POST">
             @csrf
             
             <div class="row">
@@ -63,7 +63,7 @@
                 
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">حفظ الحجز</button>
-                    <a href="{{ route('bookings.index') }}" class="btn btn-secondary">إلغاء</a>
+                    <a href="{{ route('admin.bookings.index') }}" class="btn btn-secondary">إلغاء</a>
                 </div>
             </div>
         </form>

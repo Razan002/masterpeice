@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Destination;
+use App\Models\Product;
+
+use function Psy\debug;
 
 class GeneralAdminController extends Controller
 {
@@ -19,10 +23,16 @@ class GeneralAdminController extends Controller
         // Dashboard Methods
         public function dashboard()
         {
+
+            
             $usersCount = User::count();
             $bookingsCount = Booking::count();
             $packagesCount = Package::count();
-            
+            $reviewsCount = Review::count();
+            $destinationsCount = Destination::count();
+            $productsCount = Product::count();
+            $guidesCount = User::where('role', 'guide')->count();
+
             $recentBookings = Booking::with(['user', 'package'])
                                 ->latest()
                                 ->take(5)
@@ -30,7 +40,7 @@ class GeneralAdminController extends Controller
             
             $bookingStats = $this->getBookingStats();
             
-            $recentReviews = Review::with(['user', 'package'])
+            $recentReviews = Review::with(['user', 'package' , 'booking'])
                                 ->latest()
                                 ->take(5)
                                 ->get();
@@ -41,6 +51,7 @@ class GeneralAdminController extends Controller
                 'packagesCount',
                 'recentBookings',
                 'bookingStats',
+                'reviewsCount',
                 'recentReviews'
             ));
         }
@@ -102,6 +113,8 @@ class GeneralAdminController extends Controller
 
     public function storeUser(Request $request)
     {
+
+        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -115,7 +128,7 @@ class GeneralAdminController extends Controller
         $user = User::create($validated);
 
         return redirect()->route('admin.users.index')
-                       ->with('success', 'تم إنشاء المستخدم بنجاح');
+                       ->with('success', '   user created successfully');
     }
 
     // public function showUser($id)
@@ -139,6 +152,7 @@ class GeneralAdminController extends Controller
 
     public function updateUser(Request $request, $id)
     {
+        
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
@@ -159,7 +173,7 @@ class GeneralAdminController extends Controller
         $user->update($validated);
 
         return redirect()->route('admin.users.index', $user->id)
-                       ->with('success', 'تم تحديث بيانات المستخدم بنجاح');
+                       ->with('success', 'user updated successfully'); 
     }
 
     public function deleteUser($id)
@@ -175,8 +189,33 @@ class GeneralAdminController extends Controller
         $user->delete();
         
         return redirect()->route('admin.users.index')
-                       ->with('success', 'تم حذف المستخدم بنجاح');
+                       ->with('success', ' user deleted successfully');
     }
-
+    public function manageReviews(Request $request)
+    {
+        // جلب التقييمات مع العلاقات الأساسية فقط
+        $query = Review::with(['user', 'package']);
+        
+        // تطبيق الفلترة إذا وجد بحث
+        if ($request->has('search')) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('user', function($q) use ($request) {
+                    $q->where('name', 'like', '%'.$request->search.'%');
+                })
+                ->orWhereHas('package', function($q) use ($request) {
+                    $q->where('name', 'like', '%'.$request->search.'%');
+                })
+                ->orWhere('comment', 'like', '%'.$request->search.'%');
+            });
+        }
+        
+        // جلب التقييمات مع استبعاد التي لا تحتوي على مستخدم أو باقة
+        $reviews = $query->whereHas('user')
+                       ->whereHas('package')
+                       ->latest()
+                       ->paginate(10);
+        
+        return view('admin.reviews.index', compact('reviews'));
+    }
     
 }

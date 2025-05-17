@@ -18,7 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- ملف الستايل -->
     <link href="{{ asset('assets/css/admin.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/adminpackages.css') }}" rel="stylesheet">
+  
 </head>
 <body class="admin-body">
     <div class="container-fluid">
@@ -46,6 +46,58 @@
             $('.sidebar').toggleClass('active');
         });
     </script>
+    @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // مخطط الحجوزات الشهرية
+        const bookingsCtx = document.getElementById('bookingsChart');
+        if (bookingsCtx) {
+            new Chart(bookingsCtx, {
+                type: 'line',
+                data: {
+                    labels: @json($bookingStats['months'] ?? []),
+                    datasets: [{
+                        label: 'عدد الحجوزات',
+                        data: @json($bookingStats['counts'] ?? []),
+                        backgroundColor: 'rgba(134, 184, 23, 0.1)',
+                        borderColor: 'rgba(134, 184, 23, 1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // مخطط توزيع الحجوزات حسب الباقات
+       
+        }
+    );
+</script>
+@endsection
     @stack('scripts')
 </body>
 </html>

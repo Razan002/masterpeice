@@ -11,74 +11,118 @@ use Carbon\Carbon;
 
 class BookingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function store(Request $request)
     {
-        $request->validate([
-            'package_id' => 'nullable|exists:packages,id',
-            'destination_id' => 'nullable|exists:destinations,id',
-            'booking_date' => 'required|date|after_or_equal:today',
-            'payment_method' => 'required|in:online,on_spot',
+        $validated = $request->validate([
             'people_count' => 'required|integer|min:1',
+            'payment_method' => 'required|in:online,on_spot',
+            'booking_date' => 'required|date|after_or_equal:today'
+        ]);
+    
+        
+    
+        // التحقق من عدم وجود حجز آخر في نفس اليوم
+        $existingBookingOnDate = Booking::where('user_id', Auth::id())
+            ->whereDate('booking_date', $request->booking_date)
+            ->exists();
+            
+        if ($existingBookingOnDate) {
+            return back()->with('error', 'لديك حجز فعال في هذا التاريخ، لا يمكن حجز أكثر من باقة في نفس اليوم!');
+        }
+    
+        if ($request->package_id) {
+            return $this->handlePackageBooking($request);
+        }
+    }
+
+    protected function handlePackageBooking($request)
+    {
+        $package = Package::findOrFail($request->package_id);
+
+        if (!$package->is_available) {
+            return back()->with('error', 'هذه الباقة غير متاحة للحجز حالياً!');
+        }
+
+        if (Carbon::parse($request->booking_date)->lt(Carbon::today())) {
+            return back()->with('error', 'لا يمكن الحجز في تاريخ قديم!');
+        }
+
+        // التحقق من عدم التكرار لنفس الباقة
+        $existingBooking = Booking::where('user_id', Auth::id())
+            ->where('package_id', $package->id)
+            ->whereDate('booking_date', $request->booking_date)
+            ->exists();
+
+        if ($existingBooking) {
+            return back()->with('error', 'لديك حجز فعال لهذه الباقة في نفس التاريخ!');
+        }
+
+        // إنشاء الحجز
+        $booking = Booking::create([
+            'user_id' => Auth::id(),
+            'package_id' => $package->id,
+            'booking_date' => $request->booking_date,
+            'payment_method' => $request->payment_method,
+            'people_count' => $request->people_count,
+            'total_price' => $package->price * $request->people_count,
+            'status' => 'confirmed'
         ]);
 
-        if (!$request->package_id && !$request->destination_id) {
-            return back()->with('error', 'يجب اختيار باقة أو وجهة!');
+        // تحديث حالة الباقة إذا وصلت للحد الأقصى
+        $totalBooked = Booking::where('package_id', $package->id)
+            ->whereDate('booking_date', $request->booking_date)
+            ->sum('people_count');
+
+        if ($totalBooked >= $package->max_people) {
+            $package->update(['is_available' => false]);
         }
 
-        try {
-            if ($request->package_id) {
-                $package = Package::findOrFail($request->package_id);
-                
-                $totalBookedPeople = Booking::where('package_id', $package->id)
-                    ->where('booking_date', $request->booking_date)
-                    ->sum('people_count');
-                
-                $availablePeople = $package->max_people - $totalBookedPeople;
-                
-                if ($availablePeople <= 0) {
-                    return back()->with('error', 'هذه الباقة ممتلئة بالكامل لهذا التاريخ!');
-                }
-                
-                if ($request->people_count > $availablePeople) {
-                    return back()->with('error', "لا يوجد سوى $availablePeople أماكن متبقية في هذه الباقة!");
-                }
-                
-                $base_price = $package->price;
-                $discount = $package->discount ?? 0;
-            } 
-            elseif ($request->destination_id) {
-                $destination = Destination::findOrFail($request->destination_id);
-                $base_price = $destination->price;
-                $discount = $destination->discount ?? 0;
-            }
+        return redirect()->route('home')->with('success', 'تم الحجز بنجاح!')->with('booking_id', $booking->id);
+    }
 
-            if ($discount > 0) {
-                $base_price = $base_price * (1 - $discount / 100);
-            }
-
-            $total_price = $base_price * $request->people_count;
-
-            Booking::create([
-                'user_id' => Auth::id(),
-                'package_id' => $request->package_id,
-                'destination_id' => $request->destination_id,
-                'booking_date' => $request->booking_date,
-                'payment_method' => $request->payment_method,
-                'people_count' => $request->people_count,
-                'total_price' => $total_price,
-                'status' => 'pending',
-            ]);
-
-            if ($request->package_id) {
-                $newTotalBooked = $totalBookedPeople + $request->people_count;
-                if ($newTotalBooked >= $package->max_people) {
-                    $package->update(['is_available' => false]);
-                }
-            }
-
-            return back()->with('success', 'تم الحجز بنجاح!');
-        } catch (\Exception $e) {
-            return back()->with('error', 'فشل الحجز: ' . $e->getMessage());
+    protected function createBooking($request, $base_price, $discount, $package = null, $destination = null)
+    {
+        // نفس المنطق السابق مع إضافة التحقق من التاريخ
+        $existingBookingOnDate = Booking::where('user_id', Auth::id())
+            ->whereDate('booking_date', $request->booking_date)
+            ->exists();
+            
+        if ($existingBookingOnDate) {
+            return back()->with('error', 'لديك حجز فعال في هذا التاريخ، لا يمكن حجز أكثر من باقة في نفس اليوم!');
         }
+
+        if ($discount > 0) {
+            $base_price = $base_price * (1 - $discount / 100);
+        }
+
+        $total_price = $base_price * $request->people_count;
+
+        $booking = Booking::create([
+            'user_id' => Auth::id(),
+            'package_id' => $package ? $package->id : null,
+            'destination_id' => $destination ? $destination->id : null,
+            'booking_date' => $request->booking_date,
+            'payment_method' => $request->payment_method,
+            'people_count' => $request->people_count,
+            'total_price' => $total_price,
+            'status' => 'pending',
+        ]);
+
+        if ($package) {
+            $newTotalBooked = Booking::where('package_id', $package->id)
+                ->where('booking_date', $request->booking_date)
+                ->sum('people_count');
+                
+            if ($newTotalBooked >= $package->max_people) {
+                $package->update(['is_available' => false]);
+            }
+        }
+        
+        return redirect()->route('home')->with('success', 'تم الحجز بنجاح!')->with('booking_id', $booking->id);
     }
 }

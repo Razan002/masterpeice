@@ -22,6 +22,7 @@ body {
     background-color: #f8f9fa;
     color: #4a4a4a;
     overflow-x: hidden;
+    direction: ltr; /* Changed to LTR */
 }
 
 .admin-container {
@@ -29,7 +30,7 @@ body {
     min-height: 100vh;
 }
 
-/* تصميم السايدبار */
+/* Sidebar Design - LTR */
 .sidebar {
     background: linear-gradient(180deg, var(--dark) 0%, #161D31 100%);
     width: var(--sidebar-width);
@@ -38,7 +39,8 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     transition: all 0.4s ease;
-    direction: rtl;
+    direction: ltr; /* Changed to LTR */
+    left: 0; /* Changed from right */
 }
 
 .sidebar-brand {
@@ -55,7 +57,8 @@ body {
 .sidebar-brand i {
     font-size: 1.5rem;
     color: var(--primary);
-    margin-left: 0.5rem;
+    margin-right: 0.5rem; /* Changed from margin-left */
+    margin-left: 0; /* Reset left margin */
 }
 
 .nav {
@@ -81,7 +84,7 @@ body {
 .nav-link:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
-    transform: translateX(-5px);
+    transform: translateX(5px); /* Changed direction */
 }
 
 .nav-link.active {
@@ -92,7 +95,7 @@ body {
 
 .nav-link i {
     font-size: 1.1rem;
-    margin-left: 0.5rem;
+    margin-right: 0.5rem; /* Changed from margin-left */
     width: 24px;
     text-align: center;
 }
@@ -101,15 +104,15 @@ body {
     flex: 1;
 }
 
-/* المحتوى الرئيسي */
+/* Main Content - LTR */
 .main-content {
     flex: 1;
-    margin-right: var(--sidebar-width);
+    margin-left: var(--sidebar-width); /* Changed from margin-right */
     padding: 2rem;
     transition: all 0.4s ease;
 }
 
-/* بطاقات الإحصائيات */
+/* Stats Cards */
 .stats-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -138,7 +141,7 @@ body {
     content: '';
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0; /* Changed from right */
     width: 100%;
     height: 4px;
 }
@@ -157,7 +160,7 @@ body {
     justify-content: center;
     font-size: 1.5rem;
     color: white;
-    margin-left: 1rem;
+    margin-right: 1rem; /* Changed from margin-left */
 }
 
 .stat-card.primary .stat-icon { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); }
@@ -193,10 +196,10 @@ body {
 .stat-change.negative { color: var(--danger); }
 
 .stat-change i {
-    margin-left: 0.25rem;
+    margin-right: 0.25rem; /* Changed from margin-left */
 }
 
-/* الرسوم البيانية */
+/* Charts */
 .charts-row {
     display: grid;
     grid-template-columns: 1fr;
@@ -233,7 +236,7 @@ body {
 
 .chart-card .card-header i {
     color: var(--primary);
-    margin-left: 0.5rem;
+    margin-right: 0.5rem; /* Changed from margin-left */
 }
 
 .chart-card .card-body {
@@ -241,7 +244,7 @@ body {
     height: 300px;
 }
 
-/* بطاقة أحدث الحجوزات */
+/* Recent Bookings Card */
 .recent-card {
     background: white;
     border-radius: 10px;
@@ -268,7 +271,7 @@ body {
 
 .recent-card .card-header i {
     color: var(--primary);
-    margin-left: 0.5rem;
+    margin-right: 0.5rem; /* Changed from margin-left */
 }
 
 .recent-card .card-header .view-all {
@@ -280,7 +283,7 @@ body {
 }
 
 .recent-card .card-header .view-all i {
-    margin-right: 0.25rem;
+    margin-left: 0.25rem; /* Changed from margin-right */
     font-size: 0.8rem;
 }
 
@@ -299,7 +302,7 @@ body {
 
 .recent-table th, .recent-table td {
     padding: 0.75rem;
-    text-align: right;
+    text-align: left; /* Changed from right */
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -336,11 +339,11 @@ body {
     color: var(--danger);
 }
 
-/* زر التبديل للجوال */
+/* Mobile Toggle Button */
 .sidebar-toggle {
     position: fixed;
     bottom: 30px;
-    right: 30px;
+    left: 30px; /* Changed from right */
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -362,7 +365,7 @@ body {
     box-shadow: 0 6px 16px 0 rgba(72, 243, 46, 0.5);
 }
 
-/* تكيف مع الجوال */
+/* Mobile Responsiveness */
 @media (max-width: 992px) {
     .sidebar {
         transform: translateX(calc(var(--sidebar-width) * -1));
@@ -373,120 +376,159 @@ body {
     }
     
     .main-content {
-        margin-right: 0;
+        margin-left: 0; /* Changed from margin-right */
     }
     
     .sidebar-toggle {
         display: flex;
     }
 
-    /* تنسيقات جدول المستخدمين */
-.recent-table {
-    width: 100%;
-    border-collapse: collapse;
+    .recent-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .recent-table th, .recent-table td {
+        padding: 12px 15px;
+        text-align: left; /* Changed from right */
+        border-bottom: 1px solid #eee;
+    }
+
+    .recent-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-badge.success {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-badge.primary {
+        background-color: #dbeafe;
+        color:#86B817;
+    }
+
+    .status-badge.warning {
+        background-color: #fef3c7;
+        color: #92400e;
+    }
+
+    /* Form Styles */
+    .form-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+
+    .form-card .card-header {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .form-card .card-header h3 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .form-card .card-body {
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color:#86B817;
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #ea5455;
+        color: white;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
 }
 
-.recent-table th, .recent-table td {
-    padding: 12px 15px;
-    text-align: right;
-    border-bottom: 1px solid #eee;
+/* Chart Specific Adjustments */
+.chart-card .card-body {
+    position: relative;
+    height: 300px;
+    padding: 1rem;
 }
 
-.recent-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 250px;
 }
 
-.status-badge {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.status-badge.success {
-    background-color: #d1fae5;
-    color: #065f46;
-}
-
-.status-badge.primary {
-    background-color: #dbeafe;
-    color:#86B817;
-}
-
-.status-badge.warning {
-    background-color: #fef3c7;
-    color: #92400e;
-}
-
-/* تنسيقات النماذج */
-.form-card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-
-.form-card .card-header {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-}
-
-.form-card .card-header h3 {
-    margin: 0;
-    font-size: 18px;
-}
-
-.form-card .card-body {
-    padding: 20px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.btn {
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    border: none;
-}
-
-.btn-primary {
-    background-color:#86B817;
-    color: white;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-}
-
-.btn-danger {
-    background-color: #ea5455;
-    color: white;
-}
-
-.btn-sm {
-    padding: 5px 10px;
-    font-size: 12px;
-}
-
-
-
+@media (max-width: 768px) {
+    .chart-card .card-body {
+        height: 250px;
+    }
+    .recent-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+    }
+    
+    .recent-table th, 
+    .recent-table td {
+        padding: 1rem;
+        text-align: right;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        background-color: white;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .recent-table th {
+        background-color: rgba(0, 0, 0, 0.01);
+        font-weight: 600;
+    }
 }

@@ -121,8 +121,8 @@ h2 {
 }
 
 button {
-  background: #5ac52c;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
   font-weight: 600;
   border: none;
   padding: 12px 20px;
@@ -149,52 +149,58 @@ button:hover {
 <body>
   
   <div class="wrapper">
-    <form action="{{ route('register') }}" method="POST">
-      @csrf
-      <h2>Register</h2>
-      
-      <!-- Name -->
-      <div class="input-field">
-        <input type="text" name="name" required>
-        <label>Name</label>
-      </div>
-      
-      <!-- Email -->
-      <div class="input-field">
-        <input type="email" name="email" required>
-        <label>Enter your email</label>
-      </div>
-      
-      <!-- Phone -->
-      <div class="input-field">
-        <input type="text" name="phone" required>
-        <label>Enter your phone number</label>
-      </div>
-      
-      <!-- Address -->
-      <div class="input-field">
-        <input type="text" name="address" required>
-        <label>Enter your address</label>
-      </div>
-      
-      <!-- Password -->
-      <div class="input-field">
-        <input type="password" name="password" required>
-        <label>Enter your password</label>
-      </div>
+  <form action="{{ route('register') }}" method="POST">
+  @csrf
 
-      <!-- Confirm Password -->
-      <div class="input-field">
-        <input type="password" name="password_confirmation" required>
-        <label>Confirm your password</label>
-      </div>
+  <div class="input-field">
+    <input type="text" name="name" value="{{ old('name') }}" required>
+    <label>Name</label>
+    @error('name')
+      <p style="color: red; font-size: 14px;">{{ $message }}</p>
+    @enderror
+  </div>
 
-      <button type="submit">Register</button>
-      
-      <div class="register">
-        <p>Already Have an account? <a href="{{ route('login') }}">Login</a></p>
-      </div>
-    </form>
+  <div class="input-field">
+    <input type="email" name="email" value="{{ old('email') }}" required>
+    <label>Email</label>
+    @error('email')
+      <p style="color: red; font-size: 14px;">{{ $message }}</p>
+    @enderror
+  </div>
+
+  <div class="input-field">
+    <input type="text" name="address" value="{{ old('address') }}" required>
+    <label>Address</label>
+    @error('address')
+      <p style="color: red; font-size: 14px;">{{ $message }}</p>
+    @enderror
+  </div>
+
+  <div class="input-field">
+    <input type="text" name="phone" value="{{ old('phone') }}" required>
+    <label>Phone</label>
+    @error('phone')
+      <p style="color: red; font-size: 14px;">{{ $message }}</p>
+    @enderror
+  </div>
+
+  <div class="input-field">
+    <input type="password" name="password" required>
+    <label>Password</label>
+    @error('password')
+      <p style="color: red; font-size: 14px;">{{ $message }}</p>
+    @enderror
+  </div>
+
+  <div class="input-field">
+    <input type="password" name="password_confirmation" required>
+    <label>Confirm Password</label>
+  </div>
+
+  <button type="submit" class="btn">Register</button>
+</form>
+
+
   </div>
 </body>
 </html>

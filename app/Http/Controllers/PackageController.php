@@ -30,7 +30,6 @@ class PackageController extends Controller
     {
         $package = Package::with('media', 'destination')->findOrFail($id);
 
-        // جلب آخر 3 حزم (باستثناء الحزمة الحالية)
         $latestPackages = Package::with('media', 'destination')
             ->where('id', '!=', $id)
             ->latest()
@@ -40,9 +39,9 @@ class PackageController extends Controller
         return view('detailspackages', compact('package', 'latestPackages'));
     }
 
-    public function makeAvailable(Package $package)
-    {
-        $package->update(['is_available' => true]);
-        return back()->with('success', 'تم تفعيل الباقة بنجاح');
-    }
+    // public function makeAvailable(Package $package)
+    // {
+    //     $package->update(['is_available' => true]);
+    //     return back()->with('success', 'تم تفعيل الباقة بنجاح');
+    // }
 }

@@ -64,293 +64,309 @@
 <!-- About End -->
 
 
-<!-- Service Start -->
+
+
+
 <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Our Services</h6>
-            <h1 class="mb-5">Explore Our Services</h1>
+            <h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
+            <h1 class="mb-5">Our Services</h1>
         </div>
-        <div class="row g-4">
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="service-item rounded pt-3">
-                    <div class="p-4">
-                        <i class="fa fa-3x fa-map-marker-alt text-primary mb-4"></i>
-                        <h5>Guided Tours</h5>
-                        <p>Explore the hidden gems of Al-Salt with our experienced local guides, who will take you through the city's rich history and stunning landscapes.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="service-item rounded pt-3">
-                    <div class="p-4">
-                        <i class="fa fa-3x fa-utensils text-primary mb-4"></i>
-                        <h5>Local Cuisine Experiences</h5>
-                        <p>Indulge in Al-Salt's traditional flavors with our curated food tours, showcasing the best local delicacies and dining experiences.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="service-item rounded pt-3">
-                    <div class="p-4">
-                        <i class="fa fa-3x fa-hiking text-primary mb-4"></i>
-                        <h5>Scenic Hikes</h5>
-                        <p>Join us on breathtaking hikes through Al-Salt’s mountains and valleys, offering panoramic views and an opportunity to connect with nature.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                <div class="service-item rounded pt-3">
-                    <div class="p-4">
-                        <i class="fa fa-3x fa-shopping-basket text-primary mb-4"></i>
-                        <h5>Shopping Tours</h5>
-                        <p>Discover Al-Salt’s vibrant markets, where you can purchase local crafts, handmade goods, and souvenirs to remember your trip.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="service-item rounded pt-3">
-                    <div class="p-4">
-                        <i class="fa fa-3x fa-hotel text-primary mb-4"></i>
-                        <h5>Hotel Reservations</h5>
-                        <p>We offer a wide range of accommodations, from luxurious hotels to charming guesthouses, all ensuring a comfortable stay in Al-Salt.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="service-item rounded pt-3">
-                    <div class="p-4">
-                        <i class="fa fa-3x fa-calendar text-primary mb-4"></i>
-                        <h5>Event Planning</h5>
-                        <p>We specialize in organizing unique events and experiences, from cultural festivals to private tours, tailored to your interests.</p>
-                    </div>
-                </div>
-            </div>
         
+        <!-- Horizontal Scrolling Container -->
+        <div class="services-horizontal-container">
+            <button class="scroll-btn scroll-left" aria-label="Scroll left">
+                <i class="fa fa-chevron-left"></i>
+            </button>
+            
+            <div class="services-horizontal-wrapper">
+                <div class="services-horizontal-track">
+                    <!-- Service Items -->
+                    <div class="service-card wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="service-item rounded pt-3">
+                            <div class="p-4">
+                                <i class="fa fa-3x fa-map-marker-alt text-primary mb-4"></i>
+                                <h5>Guided Tours</h5>
+                                <p>Explore the hidden gems of Al-Salt with our experienced local guides</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="service-item rounded pt-3">
+                            <div class="p-4">
+                                <i class="fa fa-3x fa-utensils text-primary mb-4"></i>
+                                <h5>Local Cuisine</h5>
+                                <p>Indulge in Al-Salt's traditional flavors with our curated food tours</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="service-item rounded pt-3">
+                            <div class="p-4">
+                                <i class="fa fa-3x fa-hiking text-primary mb-4"></i>
+                                <h5>Scenic Hikes</h5>
+                                <p>Join us on breathtaking hikes through Al-Salt's mountains and valleys</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="service-item rounded pt-3">
+                            <div class="p-4">
+                                <i class="fa fa-3x fa-shopping-basket text-primary mb-4"></i>
+                                <h5>Shopping Tours</h5>
+                                <p>Discover Al-Salt's vibrant markets for local crafts and souvenirs</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="service-item rounded pt-3">
+                            <div class="p-4">
+                                <i class="fa fa-3x fa-hotel text-primary mb-4"></i>
+                                <h5>Hotel Reservations</h5>
+                                <p>We offer a wide range of accommodations in Al-Salt</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="service-item rounded pt-3">
+                            <div class="p-4">
+                                <i class="fa fa-3x fa-calendar text-primary mb-4"></i>
+                                <h5>Event Planning</h5>
+                                <p>We specialize in organizing unique events and experiences</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="scroll-btn scroll-right" aria-label="Scroll right">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <!-- Pagination Dots -->
+        <div class="horizontal-pagination-dots text-center mt-4">
+            <span class="dot active" data-index="0" aria-label="Go to slide 1"></span>
+            <span class="dot" data-index="1" aria-label="Go to slide 2"></span>
+            <span class="dot" data-index="2" aria-label="Go to slide 3"></span>
+            <span class="dot" data-index="3" aria-label="Go to slide 4"></span>
         </div>
     </div>
 </div>
 
-<!-- Service End -->
+<style>
+    /* Horizontal Scrolling Styles */
+    .services-horizontal-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+    
+    .services-horizontal-wrapper {
+        width: 100%;
+        overflow: hidden;
+        scroll-behavior: smooth;
+    }
+    
+    .services-horizontal-track {
+        display: flex;
+        transition: transform 0.5s ease;
+        padding: 15px 0;
+        gap: 20px;
+    }
+    
+    .service-card {
+        flex: 0 0 calc(33.333% - 20px);
+        min-width: 300px;
+        scroll-snap-align: start;
+    }
+    
+    .service-item {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .service-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    
+    .scroll-btn {
+        background: #86B817;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        transition: all 0.3s;
+        flex-shrink: 0;
+    }
+    
+    .scroll-btn:hover {
+        background: #86B817;
+        transform: scale(1.1);
+    }
+    
+    .scroll-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .scroll-left {
+        margin-right: 15px;
+    }
+    
+    .scroll-right {
+        margin-left: 15px;
+    }
+    
+    /* Pagination Dots */
+    .horizontal-pagination-dots {
+        text-align: center;
+        margin-top: 30px;
+    }
+    
+    .horizontal-pagination-dots .dot {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ddd;
+        margin: 0 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .horizontal-pagination-dots .dot.active {
+        background: #86B817;
+        transform: scale(1.2);
+    }
+    
+    .horizontal-pagination-dots .dot:hover:not(.active) {
+        background: #bbb;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .service-card {
+            flex: 0 0 calc(50% - 15px);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .service-card {
+            flex: 0 0 calc(100% - 10px);
+        }
+        
+        .scroll-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.querySelector('.services-horizontal-track');
+    const dots = document.querySelectorAll('.horizontal-pagination-dots .dot');
+    const prevBtn = document.querySelector('.scroll-left');
+    const nextBtn = document.querySelector('.scroll-right');
+    const wrapper = document.querySelector('.services-horizontal-wrapper');
+    const cards = document.querySelectorAll('.service-card');
+    
+    let currentIndex = 0;
+    const cardWidth = cards[0].offsetWidth + 20; // Including gap
+    const visibleCards = Math.floor(wrapper.offsetWidth / cardWidth);
+    const totalCards = cards.length;
+    
+    // Update button states
+    function updateControls() {
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex >= totalCards - visibleCards;
+        
+        // Update dots
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    // Scroll to specific card
+    function scrollToCard(index) {
+        currentIndex = Math.max(0, Math.min(index, totalCards - visibleCards));
+        track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+        updateControls();
+    }
+    
+    // Dot click handler
+    dots.forEach(dot => {
+        dot.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            scrollToCard(index * visibleCards);
+        });
+    });
+    
+    // Next button
+    nextBtn.addEventListener('click', function() {
+        scrollToCard(currentIndex + 1);
+    });
+    
+    // Previous button
+    prevBtn.addEventListener('click', function() {
+        scrollToCard(currentIndex - 1);
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        scrollToCard(currentIndex);
+    });
+    
+    // Initialize
+    updateControls();
+    
+    // Optional: Auto-scroll (uncomment if desired)
+    // setInterval(() => {
+    //     if (!nextBtn.disabled) {
+    //         nextBtn.click();
+    //     } else {
+    //         scrollToCard(0);
+    //     }
+    // }, 5000);
+});
+</script>
 
 
 @include('homedestination')
 
 @include('awesomepackeges')
 
-<!-- Booking Start -->
-{{-- <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <div class="booking p-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-md-6 text-white">
-                    <h6 class="text-white text-uppercase">Booking</h6>
-                    <h1 class="text-white mb-4">Online Booking</h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                    <a class="btn btn-outline-light py-3 px-5 mt-2" href="">Read More</a>
-                </div>
-                <div class="col-md-6">
-                    <h1 class="text-white mb-4">Book A Tour</h1>
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control bg-transparent" id="name" placeholder="Your Name">
-                                    <label for="name">Your Name</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control bg-transparent" id="email" placeholder="Your Email">
-                                    <label for="email">Your Email</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating date" id="date3" data-target-input="nearest">
-                                    <input type="text" class="form-control bg-transparent datetimepicker-input" id="datetime" placeholder="Date & Time" data-target="#date3" data-toggle="datetimepicker" />
-                                    <label for="datetime">Date & Time</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select bg-transparent" id="select1">
-                                        <option value="1">Destination 1</option>
-                                        <option value="2">Destination 2</option>
-                                        <option value="3">Destination 3</option>
-                                    </select>
-                                    <label for="select1">Destination</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control bg-transparent" placeholder="Special Request" id="message" style="height: 100px"></textarea>
-                                    <label for="message">Special Request</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-outline-light w-100 py-3" type="submit">Book Now</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
-<!-- Booking Start -->
 
 
-<!-- Process Start -->
-{{-- <div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center pb-4 wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Process</h6>
-            <h1 class="mb-5">3 Easy Steps</h1>
-        </div>
-        <div class="row gy-5 gx-4 justify-content-center">
-            <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-                        <i class="fa fa-globe fa-3x text-white"></i>
-                    </div>
-                    <h5 class="mt-4">Choose A Destination</h5>
-                    <hr class="w-25 mx-auto bg-primary mb-1">
-                    <hr class="w-50 mx-auto bg-primary mt-0">
-                    <p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam eos erat ipsum et lorem et sit sed stet lorem sit</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-                        <i class="fa fa-dollar-sign fa-3x text-white"></i>
-                    </div>
-                    <h5 class="mt-4">Pay Online</h5>
-                    <hr class="w-25 mx-auto bg-primary mb-1">
-                    <hr class="w-50 mx-auto bg-primary mt-0">
-                    <p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam eos erat ipsum et lorem et sit sed stet lorem sit</p>
-                </div>
-            </div>
-          
-        </div>
-    </div>
-</div> --}}
-<!-- Process Start -->
 
 
-<!-- Team Start -->
-{{-- <div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Travel Guide</h6>
-            <h1 class="mb-5">Meet Our Guide</h1>
-        </div>
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="team-item">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="assets/img/team-1.jpg" alt="">
-                    </div>
-                    <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                    </div>
-                    <div class="text-center p-4">
-                        <h5 class="mb-0">Full Name</h5>
-                        <small>Designation</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="team-item">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="assets/img/team-2.jpg" alt="">
-                    </div>
-                    <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                    </div>
-                    <div class="text-center p-4">
-                        <h5 class="mb-0">Full Name</h5>
-                        <small>Designation</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="team-item">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="assets/img/team-3.jpg" alt="">
-                    </div>
-                    <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                    </div>
-                    <div class="text-center p-4">
-                        <h5 class="mb-0">Full Name</h5>
-                        <small>Designation</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                <div class="team-item">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="assets/img/team-4.jpg" alt="">
-                    </div>
-                    <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                    </div>
-                    <div class="text-center p-4">
-                        <h5 class="mb-0">Full Name</h5>
-                        <small>Designation</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
-<!-- Team End -->
 
 
-<!-- Testimonial Start -->
-{{-- <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" >
-    <div class="container">
-        <div class="text-center">
-            <h6 class="section-title bg-white text-center text-primary px-3">Testimonial</h6>
-            <h1 class="mb-5">Our Clients Say!!!</h1>
-        </div>
-        <div class="owl-carousel testimonial-carousel position-relative">
-            <div class="testimonial-item bg-white text-center border p-4">
-                <img class="bg-white rounded-circle shadow p-1 mx-auto mb-3" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
-                <h5 class="mb-0">John Doe</h5>
-                <p>New York, USA</p>
-                <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-            </div>
-            <div class="testimonial-item bg-white text-center border p-4">
-                <img class="bg-white rounded-circle shadow p-1 mx-auto mb-3" src="assets/img/testimonial-2.jpg" style="width: 80px; height: 80px;">
-                <h5 class="mb-0">John Doe</h5>
-                <p>New York, USA</p>
-                <p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-            </div>
-            <div class="testimonial-item bg-white text-center border p-4">
-                <img class="bg-white rounded-circle shadow p-1 mx-auto mb-3" src="assets/img/testimonial-3.jpg" style="width: 80px; height: 80px;">
-                <h5 class="mb-0">John Doe</h5>
-                <p>New York, USA</p>
-                <p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-            </div>
-            <div class="testimonial-item bg-white text-center border p-4">
-                <img class="bg-white rounded-circle shadow p-1 mx-auto mb-3" src="assets/img/testimonial-4.jpg" style="width: 80px; height: 80px;">
-                <h5 class="mb-0">John Doe</h5>
-                <p>New York, USA</p>
-                <p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-            </div>
-        </div>
-    </div>
-</div> --}}
-<!-- Testimonial End -->
+
+
+
+
+
 
 @include('components.footer')

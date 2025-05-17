@@ -65,7 +65,10 @@
                     <select class="form-control" id="role" name="role" required>
                         <option value="general_admin" {{ old('role', $user->role) == 'general_admin' ? 'selected' : '' }}>General Admin</option>
                         <option value="general_owner" {{ old('role', $user->role) == 'product_owner' ? 'selected' : '' }}>product Owner</option>
+                        <option value="guide" {{ old('role', $user->role) == 'guide' ? 'selected' : '' }}>guide</option>
+
                         <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}> User</option>
+
                     </select>
                 </div>
                 

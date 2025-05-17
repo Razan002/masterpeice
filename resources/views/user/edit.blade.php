@@ -1,20 +1,20 @@
-<h1>تعديل بيانات المستخدم</h1>
+<h1>Edit User Information</h1>
 
 <form action="{{ route('user.update', $user->id) }}" method="POST">
     @csrf
     @method('PUT')
 
-    <label for="name">الاسم</label>
+    <label for="name">Name</label>
     <input type="text" name="name" value="{{ $user->name }}" required>
 
-    <label for="email">البريد الإلكتروني</label>
+    <label for="email">Email</label>
     <input type="email" name="email" value="{{ $user->email }}" required>
 
-    <label for="phone">رقم الهاتف</label>
+    <label for="phone">Phone Number</label>
     <input type="text" name="phone" value="{{ $user->phone }}">
 
-    <label for="address">العنوان</label>
+    <label for="address">Address</label>
     <textarea name="address">{{ $user->address }}</textarea>
 
-    <button type="submit">تحديث</button>
+    <button type="submit">Update</button>
 </form>

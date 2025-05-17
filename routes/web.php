@@ -77,12 +77,11 @@ Route::prefix('products')->name('product.')->group(function () {
     Route::get('/category/{category}', [ProductController::class, 'byCategory'])->name('category'); // product.category
 });
 Route::post('/book-ticket', [BookingController::class, 'store'])->name('bookings.store')->middleware('auth');
-
+// Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
 // مسار لعرض الصفحة الشخصية
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-Route::post('/profile/booking/cancel/{id}', [ProfileController::class, 'cancelBooking'])->name('profile.booking.cancel');
-
+Route::resource('bookings', BookingController::class);
 // Admin Routes
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [GeneralAdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -113,9 +112,15 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users/{id}', [GeneralAdminController::class, 'showUser'])->name('admin.users.show');
     // Bookings
     Route::get('/bookings', [AdminBookingController::class, 'index'])->name('admin.bookings');
-    Route::get('/bookings/{id}', [GeneralAdminController::class, 'showBooking'])->name('admin.bookings.show');
-    Route::get('/bookings/{id}/edit', [GeneralAdminController::class, 'editBooking'])->name('admin.bookings.edit');
-    Route::put('/bookings/{id}', [GeneralAdminController::class, 'updateBooking'])->name('admin.bookings.update');
+    Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('admin.bookings.create');
+    Route::post('/bookings', [AdminBookingController::class, 'store'])->name('admin.bookings.store');
+    Route::get('/bookings/{booking}/edit', [AdminBookingController::class, 'edit'])->name('admin.bookings.edit');    
+    Route::put('/bookings/{booking}', [AdminBookingController::class, 'update'])->name('admin.bookings.update');
+    Route::delete('/bookings/{booking}', [AdminBookingController::class, 'destroy'])->name('admin.bookings.destroy');
+    Route::get('/bookings/{id}', [AdminBookingController::class, 'showBooking'])->name('admin.bookings.show');
+
+    // Route::get('/bookings/{id}/edit', [GeneralAdminController::class, 'editBooking'])->name('admin.bookings.edit');
+    // Route::put('/bookings/{id}', [GeneralAdminController::class, 'updateBooking'])->name('bookings.update');
     Route::post('/bookings/{id}', [GeneralAdminController::class, 'deleteBooking'])->name('admin.bookings.destroy');    // Reviews
     Route::get('/reviews', [GeneralAdminController::class, 'manageReviews'])->name('admin.reviews');
     Route::get('/reviews/{id}', [GeneralAdminController::class, 'showReview'])->name('admin.reviews.show');
@@ -126,7 +131,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 Route::get('/cart', [ProductController::class, 'cart'])->name('cart'); // عرض صفحة السلة
 Route::post('/cart/add', [ProductController::class, 'addToCart'])->name('cart.add'); // إضافة عنصر للسلة
 Route::delete('/cart/remove/{id}', [ProductController::class, 'removeFromCart'])->name('cart.remove'); // حذف عنصر من السلة
-Route::patch('/cart/update/{id}', [ProductController::class, 'updateCart'])->name('cart.update');
+Route::post('/cart/update/{id}', [ProductController::class, 'updateCart'])->name('cart.update');
 
 
 
@@ -136,6 +141,7 @@ Route::middleware(['auth', 'role:product_owner'])->prefix('product-owner')->name
     // Routes لإدارة المنتجات
     Route::middleware(['auth', 'role:product_owner'])->prefix('product-owner')->name('product_owner.')->group(function () {
         Route::get('/dashboard', [ProductOwnerAdminController::class, 'dashboard'])->name('dashboard');
+        
         // مسارات المنتجات الأخرى (إضافة، تعديل، حذف)
     });
     
@@ -166,15 +172,26 @@ Route::prefix('product-owner')->name('product_owner.')->group(function() {
         'edit' => 'products.edit',
         'update' => 'products.update',
         'destroy' => 'products.destroy',
+
+
     ]);
 
 
     Route::get('orders', [ProductOwnerAdminController::class, 'indexOrders'])->name('orders.index');
     Route::get('orders/{id}', [ProductOwnerAdminController::class, 'showOrder'])->name('orders.show');
+
+    Route::get('/profile', [ProductOwnerAdminController::class, 'showProfile'])->name('product_owner.profile');
+    Route::put('/profile', [ProductOwnerAdminController::class, 'updateProfile'])->name('product_owner.profile.update');
+    Route::get('/change-password', [ProductOwnerAdminController::class, 'showChangePasswordForm'])->name('product_owner.password.change');
+    Route::post('/change-password', [ProductOwnerAdminController::class, 'changePassword'])->name('product_owner.password.update');
 });
 
 Route::resource('special-offers', SpecialOfferController::class);
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store')->middleware('auth');
+Route::resource('reviews', ReviewController::class)->only([
+    'create', 'store', 'edit', 'update', 'destroy'
+]);
+Route::get('/packages/{package}/review', [ReviewController::class, 'createForPackage'])->name('review.create.package');
+Route::get('/products/{product}/review', [ReviewController::class, 'createForProduct'])->name('review.create.product');
 
 
 

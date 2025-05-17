@@ -19,13 +19,13 @@
                         <tr>
                             <th>#</th>
                             <th>User Name</th>
-                            <th>الباقة</th>
-                            <th>الوجهة</th>
-                            <th>تاريخ الحجز</th>
-                            <th>الدفع</th>
-                            <th>السعر</th>
-                            <th>الحالة</th>
-                            <th>الإجراءات</th>
+                            <th>Package</th>
+                            <th>Destination</th>
+                            <th>Booking Date</th>
+                            <th>Payment</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,19 +42,19 @@
                             </td>
                             <td>
                                 <span class="status-badge light">
-                                    {{ $booking->package?->title ?? 'مخصص' }}
+                                    {{ $booking->package?->title ?? 'Custom' }}
                                 </span>
                             </td>
-                            <td>{{ $booking->destination?->name ?? 'غير محدد' }}</td>
+                            <td>{{ $booking->destination?->name ?? 'Not specified' }}</td>
                             <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('Y-m-d') }}</td>
                             <td>
                                 @if($booking->payment_method == 'online')
                                     <span class="status-badge success">
-                                        <i class="fas fa-check-circle me-1"></i> إلكتروني
+                                        <i class="fas fa-check-circle me-1"></i> Online
                                     </span>
                                 @else
                                     <span class="status-badge primary">
-                                        <i class="fas fa-money-bill-wave me-1"></i> عند الوصول
+                                        <i class="fas fa-money-bill-wave me-1"></i> On Arrival
                                     </span>
                                 @endif
                             </td>
@@ -62,29 +62,27 @@
                             <td>
                                 @if($booking->status == 'pending')
                                     <span class="status-badge warning">
-                                        <i class="fas fa-clock me-1"></i> قيد الانتظار
+                                        <i class="fas fa-clock me-1"></i> Pending
                                     </span>
                                 @elseif($booking->status == 'confirmed')
                                     <span class="status-badge success">
-                                        <i class="fas fa-check-circle me-1"></i> مؤكد
+                                        <i class="fas fa-check-circle me-1"></i> Confirmed
                                     </span>
                                 @else
                                     <span class="status-badge danger">
-                                        <i class="fas fa-times-circle me-1"></i> ملغى
+                                        <i class="fas fa-times-circle me-1"></i> Cancelled
                                     </span>
                                 @endif
                             </td>
                             <td class="actions">
-                                <a href="#" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-secondary">
+                               
+                                <a href="{{ route('admin.bookings.edit', $booking->id) }}" class="btn btn-sm btn-secondary">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد من حذف هذه الحجز؟')">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this booking?')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -96,15 +94,15 @@
                 
                 @if($bookings->isEmpty())
                 <div class="no-data">
-                    <img src="{{ asset('images/no-data.svg') }}" alt="لا توجد بيانات">
-                    <h5>لا توجد حجوزات متاحة</h5>
+                    <img src="{{ asset('images/no-data.svg') }}" alt="No data available">
+                    <h5>No bookings available</h5>
                 </div>
                 @endif
             </div>
             
             <div class="table-footer">
                 <div class="table-info">
-                    عرض <span>{{ $bookings->firstItem() }}</span> إلى <span>{{ $bookings->lastItem() }}</span> من <span>{{ $bookings->total() }}</span> حجوزات
+                    Showing <span>{{ $bookings->firstItem() }}</span> to <span>{{ $bookings->lastItem() }}</span> of <span>{{ $bookings->total() }}</span> bookings
                 </div>
                 <div class="table-pagination">
                     {{ $bookings->links('pagination::bootstrap-5') }}

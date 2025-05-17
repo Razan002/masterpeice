@@ -1,13 +1,13 @@
 @include('components.app')
 
-<div class="container py-5">
+<div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <div>
-            <h1 class="h2 text-dark fw-bold mb-1">تعديل الباقة: {{ $package->title }}</h1>
-            <p class="text-muted mb-0">قم بتعديل بيانات الباقة السياحية</p>
+            <h1 class="h2 text-dark fw-bold mb-1">Edit Package: {{ $package->title }}</h1>
+            <p class="text-muted mb-0">Update the tour package details</p>
         </div>
         <a href="{{ route('admin.packages.index') }}" class="btn btn-outline-secondary rounded-pill">
-            <i class="fas fa-arrow-left me-2"></i> رجوع للقائمة
+            <i class="fas fa-arrow-left me-2"></i> Back to List
         </a>
     </div>
 
@@ -21,7 +21,7 @@
 
     <div class="card border-0 shadow-lg">
         <div class="card-header bg-primary text-white py-3">
-            <h5 class="mb-0"><i class="fas fa-edit me-2"></i> تعديل الباقة</h5>
+            <h5 class="mb-0"><i class="fas fa-edit me-2"></i> Edit Package</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.packages.update', $package->id) }}" method="POST" class="needs-validation" novalidate>
@@ -29,55 +29,55 @@
                 @method('PUT')
 
                 <div class="row g-4">
-                    <!-- العمود الأول -->
+                    <!-- First Column -->
                     <div class="col-lg-6">
-                        <!-- عنوان الباقة -->
+                        <!-- Package Title -->
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="title" name="title" 
-                                   value="{{ old('title', $package->title) }}" placeholder="أدخل عنوان الباقة" required>
-                            <label for="title" class="text-muted">عنوان الباقة <span class="text-danger">*</span></label>
-                            <div class="invalid-feedback">يرجى إدخال عنوان الباقة</div>
+                                   value="{{ old('title', $package->title) }}" placeholder="Enter package title" required>
+                            <label for="title" class="text-muted">Package Title <span class="text-danger">*</span></label>
+                            <div class="invalid-feedback">Please enter package title</div>
                         </div>
 
-                        <!-- الوصف -->
+                        <!-- Description -->
                         <div class="form-floating mb-3">
                             <textarea class="form-control" id="description" name="description" 
-                                      placeholder="أدخل وصف الباقة" style="height: 120px" required>{{ old('description', $package->description) }}</textarea>
-                            <label for="description" class="text-muted">الوصف <span class="text-danger">*</span></label>
-                            <div class="invalid-feedback">يرجى إدخال وصف الباقة</div>
+                                      placeholder="Enter package description" style="height: 120px" required>{{ old('description', $package->description) }}</textarea>
+                            <label for="description" class="text-muted">Description <span class="text-danger">*</span></label>
+                            <div class="invalid-feedback">Please enter package description</div>
                         </div>
                     </div>
 
-                    <!-- العمود الثاني -->
+                    <!-- Second Column -->
                     <div class="col-lg-6">
-                        <!-- السعر -->
+                        <!-- Price -->
                         <div class="form-floating mb-3">
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0"><i class="fas fa-money-bill-wave text-primary"></i></span>
                                 <input type="number" step="0.01" class="form-control border-start-0" id="price" name="price" 
-                                       value="{{ old('price', $package->price) }}" placeholder="السعر" min="0" required>
-                                <span class="input-group-text bg-light">دينار</span>
-                                <label for="price" class="text-muted">السعر <span class="text-danger">*</span></label>
+                                       value="{{ old('price', $package->price) }}" placeholder="Price" min="0" required>
+                                <span class="input-group-text bg-light">Dinar</span>
+                                <label for="price" class="text-muted">Price <span class="text-danger">*</span></label>
                             </div>
-                            <div class="invalid-feedback">يرجى إدخال سعر صحيح</div>
+                            <div class="invalid-feedback">Please enter a valid price</div>
                         </div>
 
-                        <!-- حالة الباقة -->
+                        <!-- Package Status -->
                         <div class="form-check form-switch mb-3">
                             <input class="form-check-input" type="checkbox" id="is_active" name="is_active" 
                                    {{ $package->is_active ? 'checked' : '' }} value="1">
-                            <label class="form-check-label" for="is_active">الباقة مفعلة</label>
+                            <label class="form-check-label" for="is_active">Package is active</label>
                         </div>
                     </div>
                 </div>
 
-                <!-- زر الحفظ -->
+                <!-- Save Buttons -->
                 <div class="d-flex justify-content-between mt-5">
                     <button type="reset" class="btn btn-outline-danger rounded-pill px-4">
-                        <i class="fas fa-trash-alt me-2"></i> مسح التعديلات
+                        <i class="fas fa-trash-alt me-2"></i> Discard Changes
                     </button>
                     <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
-                        <i class="fas fa-save me-2"></i> حفظ التعديلات
+                        <i class="fas fa-save me-2"></i> Save Changes
                     </button>
                 </div>
             </form>
@@ -86,7 +86,7 @@
 </div>
 
 <script>
-    // تفعيل التحقق من الصحة
+    // Enable form validation
     (function () {
         'use strict'
         var forms = document.querySelectorAll('.needs-validation')

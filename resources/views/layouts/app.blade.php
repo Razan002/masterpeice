@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') | لوحة التحكم</title>
+    <title>@yield('title') Admin Dashboard </title>
     
     <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
@@ -13,6 +13,7 @@
     <link href="{{ asset('assets/css/admin.css') }}" rel="stylesheet">
 </head>
 <body class="admin-body">
+    
     <div class="container-fluid">
         <div class="row">
             <!-- تضمين السايدبار -->
