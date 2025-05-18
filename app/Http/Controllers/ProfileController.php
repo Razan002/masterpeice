@@ -10,57 +10,73 @@ use App\Models\Review;
 use App\Models\Destination;
 use App\Models\Package;
 use App\Models\SpecialOffer;
+use App\Models\Order;
+
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    // عرض الصفحة الشخصية للمستخدم
     public function show()
     {
         $user = Auth::user();
         $bookings = Booking::where('user_id', $user->id)->get();
+        $orders = Order::with('products')->where('user_id', $user->id)->latest()->get();
     
-        return view('users.profile', compact('user', 'bookings'));
+        return view('users.profile', compact('user', 'bookings', 'orders'));
+    }
+    
+    // عرض تفاصيل طلب معين
+    public function showOrder($id)
+    {
+        $order = Order::with('products')->where('user_id', Auth::id())->findOrFail($id);
+        return view('users.order-details', compact('order'));
     }
     
 
     // تحديث بيانات المستخدم
-    public function update(Request $request)
-    {
-        // التحقق من صحة المدخلات
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
-            'phone' => 'nullable|string|max:15',
-        ]);
+   // تحديث بيانات المستخدم
+public function update(Request $request)
+{
+    // التحقق من صحة المدخلات
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
+        'phone' => 'nullable|string|max:15',
+        'address' => 'nullable|string|max:500',
+        'password' => 'nullable|string|min:8|confirmed'
+    ]);
 
-        // استرجاع المستخدم الحالي
-        $user = Auth::user();
+    $user = User::findOrFail(Auth::id());
 
-        // تحديث بيانات المستخدم
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-        ]);
-
-        return back()->with('success', 'تم حفظ التعديلات بنجاح!');
+    if ($request->filled('password')) {
+        $validated['password'] = Hash::make($validated['password']);
+    } else {
+        unset($validated['password']);
     }
+
+    foreach ($validated as $key => $value) {
+        $user->$key = $value;
+    }
+    $user->save();
+
+    return back()->with('success', 'changes saved successfully!');  
+}
 
     // إلغاء الحجز
-    public function cancelBooking($bookingId)
-    {
-        $booking = Booking::findOrFail($bookingId);
+    // public function cancelBooking($bookingId)
+    // {
+    //     $booking = Booking::findOrFail($bookingId);
 
-        // التأكد أن الحجز يعود للمستخدم الحالي
-        if ($booking->user_id != Auth::id()) {
-            return redirect()->route('profile.show')->with('error', 'ليس لديك صلاحية لإلغاء هذا الحجز.');
-        }
+    //     // التأكد أن الحجز يعود للمستخدم الحالي
+    //     if ($booking->user_id != Auth::id()) {
+    //         return redirect()->route('profile.show')->with('error', 'ليس لديك صلاحية لإلغاء هذا الحجز.');
+    //     }
 
-        // إلغاء الحجز
-        $booking->update(['status' => 'cancelled']);
+    //     // إلغاء الحجز
+    //     $booking->update(['status' => 'cancelled']);
 
-        return redirect()->route('profile.show')->with('success', 'تم إلغاء الحجز بنجاح!');
-    }
+    //     return redirect()->route('profile.show')->with('success', 'تم إلغاء الحجز بنجاح!');
+    // }
 
     public function addReview(Request $request)
 {
@@ -74,7 +90,7 @@ class ProfileController extends Controller
         ->first();
 
     if (!$booking) {
-        return back()->with('error', 'لا يمكنك إضافة مراجعة لأنك لم تقم بالحجز لهذا المكان.');
+        return back()->with('error', 'you must book a package or destination before adding a review.');
     }
 
     // إذا كان هناك حجز صالح، يتم إضافة المراجعة
@@ -86,20 +102,21 @@ class ProfileController extends Controller
     $review->comment = $request->comment;
     $review->save();
 
-    return back()->with('success', 'تم إضافة المراجعة بنجاح!');
+    return back()->with('success', '   review added successfully!');
+}
 }
 
 
-public function showDestinationDetails($id)
-{
-    // استرجاع تفاصيل الـ destination
-    $destination = Destination::findOrFail($id);
+// public function showDestinationDetails($id)
+// {
+//     // استرجاع تفاصيل الـ destination
+//     $destination = Destination::findOrFail($id);
 
-    // استرجاع المراجعات المرتبطة بالـ destination
-    $reviews = Review::where('destination_id', $destination->id)->get();
+//     // استرجاع المراجعات المرتبطة بالـ destination
+//     $reviews = Review::where('destination_id', $destination->id)->get();
 
-    // تمرير الـ destination و الـ reviews إلى الـ view
-    return view('destinationdetails', compact('destination', 'reviews'));
-}
+//     // تمرير الـ destination و الـ reviews إلى الـ view
+//     return view('destinationdetails', compact('destination', 'reviews'));
+// }
 
-}
+

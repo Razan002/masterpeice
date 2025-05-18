@@ -25,7 +25,7 @@
                     </span>
                 </div>
 
-                <h4 class="text-primary mb-4">${{ number_format($product->price, 2) }}</h4>
+                <h4 class="text-primary mb-4">JD{{ number_format($product->price, 2) }}</h4>
 
                 <p class="mb-4">{{ $product->description }}</p>
 

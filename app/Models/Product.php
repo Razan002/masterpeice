@@ -27,9 +27,7 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
-    /**
-     * العلاقة مع الـ Media
-     */
+  
     public function media()
     {
         return $this->hasMany(Media::class);

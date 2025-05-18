@@ -241,7 +241,7 @@ body {
 
 .chart-card .card-body {
     padding: 1.5rem;
-    height: 300px;
+    
 }
 
 /* Recent Bookings Card */
@@ -491,17 +491,9 @@ body {
 }
 
 /* Chart Specific Adjustments */
-.chart-card .card-body {
-    position: relative;
-    height: 300px;
-    padding: 1rem;
-}
 
-canvas {
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 250px;
-}
+
+
 
 @media (max-width: 768px) {
     .chart-card .card-body {

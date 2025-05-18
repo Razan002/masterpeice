@@ -10,68 +10,86 @@
     </div>
 </div>
 
-
 <div class="container py-5">
     <div class="row">
-        
         <div class="col-md-6">
             <div class="row">
-                @foreach($package->media as $media)
-                    <div class="col-12 mb-4">
-                        <img src="{{ asset('storage/images/' . $media->media) }}" alt="Image" class="img-fluid rounded">
-                    </div>
-                @endforeach
+                @if($package->media->isNotEmpty())
+                    <img src="{{ asset('storage/' . $package->media->first()->media) }}" alt="{{ $package->title }}" class="img-fluid rounded">
+                @else
+                    <p class="text-center py-5">No image available</p>
+                @endif
             </div>
         </div>
-        
         
         <div class="col-md-6">
             <h2 class="mb-4">{{ $package->title }} Details</h2>
             <p class="lead">{{ $package->description }}</p>
             <p class="h4 text-primary mb-4">Price: {{ $package->price }} JOD</p>
 
+            <!-- Display available spots -->
+            @php
+                $totalBookings = $package->bookings->sum('people_count');
+                $availableSpots = max(0, $package->max_people - $totalBookings);
+                $isFullyBooked = $availableSpots <= 0;
+            @endphp
+
+            <div class="alert {{ $isFullyBooked ? 'alert-danger' : 'alert-success' }} mb-4">
+                <i class="fas fa-users me-2"></i>
+                @if($isFullyBooked)
+                    This package is fully booked
+                @else
+                    Available spots: {{ $availableSpots }} out of {{ $package->max_people }}
+                @endif
+            </div>
+
+            @if(!$isFullyBooked && $package->is_available && $package->date >= now())
             <form action="{{ route('bookings.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="package_id" value="{{ $package->id }}">
-               
                 <input type="hidden" name="total_price" value="{{ $package->price }}">
+                <input type="hidden" name="booking_date" value="{{ $package->date }}">
 
                 <div class="mb-4">
-                    <label class="form-label"> Date</label>
+                    <label class="form-label">Date</label>
                     <input type="text" class="form-control" 
-                           value="{{ $package->date ? \Carbon\Carbon::parse($package->date)->format('d M, Y') : 'لم يتم تحديد تاريخ' }}" 
+                           value="{{ $package->date ? \Carbon\Carbon::parse($package->date)->format('d M, Y') : 'Date not specified' }}" 
                            readonly>
-                           <input type="hidden" name="booking_date" value="{{ $package->date }}">
-
                 </div>
             
-               
                 <div class="mb-4">
                     <label for="people_count" class="form-label">Number of People</label>
-                    <input type="number" class="form-control" id="people_count" name="people_count" min="1" max="{{ $package->max_people }}" required>
+                    <input type="number" class="form-control" id="people_count" name="people_count" 
+                           min="1" max="{{ $availableSpots }}" required
+                           oninput="updateTotalPrice(this.value)">
+                    <small class="text-muted">Maximum allowed: {{ $availableSpots }} people</small>
                 </div>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="fw-bold">Availability:</span>
-                    <span>{{ $package->is_available ? 'Available' : 'Not Available' }}</span>
-                </li>
-                
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="fw-bold">Meal Included:</span>
-                    <span>{{ $package->meal ?? 'Not specified' }}</span>
-                </li>
-                
 
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="fw-bold">Day of Week:</span>
-                    <span>{{ $package->day_of_week ?? 'Not specified' }}</span>
-                </li>
-            @if($package->has_museum)
-<li class="list-group-item d-flex justify-content-between align-items-center">
-    <span class="fw-bold">Museum Name:</span>
-    <span>{{ $package->museum_name ?? 'No museum specified' }}</span>
-</li>
-@endif
-                
+                <ul class="list-group mb-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Availability:</span>
+                        <span class="badge bg-{{ $package->is_available ? 'success' : 'danger' }}">
+                            {{ $package->is_available ? 'Available' : 'Not Available' }}
+                        </span>
+                    </li>
+                    
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Meal Included:</span>
+                        <span>{{ $package->meal ?? 'Not specified' }}</span>
+                    </li>
+                    
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Day of Week:</span>
+                        <span>{{ $package->day_of_week ?? 'Not specified' }}</span>
+                    </li>
+                    
+                    @if($package->has_museum)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Museum Name:</span>
+                        <span>{{ $package->museum_name ?? 'No museum specified' }}</span>
+                    </li>
+                    @endif
+                </ul>
                 
                 <div class="mb-4">
                     <label for="payment_method" class="form-label">Payment Method</label>
@@ -80,135 +98,167 @@
                         <option value="on_spot">Pay on Spot</option>
                     </select>
                 </div>
-            
-                {{-- <div class="mb-4">
-                    <label for="custom_package_details" class="form-label">Custom Package Details (Optional)</label>
-                    <textarea class="form-control" id="custom_package_details" name="custom_package_details" rows="3"></textarea>
-                </div> --}}
+
+                <div class="mb-4">
+                    <p class="h5">Total Price: <span id="totalPrice">{{ $package->price }}</span> JOD</p>
+                </div>
             
                 <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
                     Book Now
                 </button>
-
-                @if(session('success'))
-    <script>
-        alert("{{ session('success') }}");
-    </script>
-@endif
-
             </form>
-              <!-- Reviews Section -->
-        {{-- <div class="reviews-section">
-            <h2 class="mb-4" style="color: var(--primary-color);">Customer Reviews</h2>
-            
-            
-            @if($package->reviews && $package->reviews->count() > 0)
-                <div class="reviews-list">
-                    @foreach($package->reviews as $review)
-                        <div class="review-card">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <div class="reviewer-name" style="font-weight: bold; font-size: 1.1rem;">
-                                    {{ $review->user->name ?? 'Anonymous' }}
-                                </div>
-                                <div class="review-date">
-                                    {{ $review->created_at->format('d M Y') }}
-                                </div>
-                            </div>
-                            
-                            <div class="review-rating">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= $review->rating)
-                                        ★
-                                    @else
-                                        ☆
-                                    @endif
-                                @endfor
-                            </div>
-                            
-                            <div class="review-comment mt-2">
-                                {{ $review->comment }}
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
             @else
-                <div class="alert-info">
-                    No reviews yet. Be the first to review!
+            <div class="alert alert-warning">
+                @if($isFullyBooked)
+                    Booking is not available because the package is fully booked
+                @elseif(!$package->is_available)
+                    This package is currently unavailable
+                @else
+                    The package date has passed
+                @endif
+            </div>
+            @endif
+
+            @if(session('success'))
+                <div class="alert alert-success mt-3">
+                    {{ session('success') }}
                 </div>
             @endif
-            
-            
-            @auth
-                @php
-                    $userBooking = auth()->user()->bookings()
-                        ->where('package_id', $package->id)
-                        ->first();
-                @endphp
-                
-                @if($userBooking)
-                    <div class="add-review mt-5">
-                        <h3 class="mb-3" style="color: var(--primary-color);">Write Your Review</h3>
-                        
-                        <form action="{{ route('reviews.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="package_id" value="{{ $package->id }}">
-                            <input type="hidden" name="booking_id" value="{{ $userBooking->id }}">
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Your Rating</label>
-                                <div class="rating-stars">
-                                    @for($i = 5; $i >= 1; $i--)
-                                        <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" 
-                                               {{ old('rating') == $i ? 'checked' : '' }} required>
-                                        <label for="star{{ $i }}">★</label>
-                                    @endfor
-                                </div>
-                                @error('rating')
-                                    <div class="text-danger small">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="comment" class="form-label">Your Review</label>
-                                <textarea class="form-control" id="comment" name="comment" rows="4" 
-                                          placeholder="Share your experience..." required>{{ old('comment') }}</textarea>
-                          
-                            </div>
-                            
-                            <button type="submit" style="background-color: var(--primary-color);">
-                                <i class="fas fa-paper-plane me-2"></i> Submit Review
-                            </button>
-                        </form>
-                    </div>
-                @else
-                    <div class="alert-info mt-4">
-                        You need to book first to leave a review. 
-                        <a href="{{ route('bookings.create', ['package' => $package->id]) }}" 
-                           style="color: var(--primary-color); text-decoration: underline;">
-                            Book Now
-                        </a>
-                    </div>
-                @endif
-            @else
-                <div class="alert-info mt-4">
-                    <a href="{{ route('login') }}" style="color: var(--primary-color); text-decoration: underline;">
-                        Sign in
-                    </a> 
-                    to leave a review
+
+            @if(session('error'))
+                <div class="alert alert-danger mt-3">
+                    {{ session('error') }}
                 </div>
-            @endauth
-        </div> --}}
-    </div>
+            @endif
         </div>
     </div>
+
+   <!-- Reviews Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h3 class="mb-4 border-bottom pb-2">Traveler Reviews</h3>
+        
+        @if($package->reviews->count() > 0)
+            <div class="reviews-container d-flex flex-nowrap overflow-auto pb-3">
+                @foreach($package->reviews as $review)
+                    <div class="card mb-3 me-3" style="min-width: 280px;">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="card-title mb-0 fw-bold">{{ $review->user->name ?? 'Anonymous' }}</h6>
+                                <div class="rating">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fas fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-secondary' }}" style="font-size: 0.8rem;"></i>
+                                    @endfor
+                                </div>
+                            </div>
+                            <p class="card-text small">{{ $review->comment }}</p>
+                            <small class="text-muted d-block" style="font-size: 0.7rem;">Posted on {{ $review->created_at->format('M d, Y') }}</small>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="alert alert-info">
+                No reviews yet. Be the first to review this package!
+            </div>
+        @endif
+            <!-- Add Review Form -->
+            @auth
+                <div class="add-review mt-5">
+                    <h4 class="mb-3">Add Your Review</h4>
+                    <form action="{{ route('reviews.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="package_id" value="{{ $package->id }}">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            <div class="rating-input">
+                                @for($i = 5; $i >= 1; $i--)
+                                    <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" required>
+                                    <label for="star{{ $i }}" class="star-label"><i class="fas fa-star"></i></label>
+                                @endfor
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Your Review</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            @else
+                <div class="alert alert-warning mt-4">
+                    <a href="{{ route('login') }}" class="alert-link">Login</a> to leave a review.
+                </div>
+            @endauth
+
+            
+        </div>
+        
+    </div>
 </div>
-@if(session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
-@endif
 
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
-
+<script>
+    function updateTotalPrice(peopleCount) {
+        const pricePerPerson = {{ $package->price }};
+        document.getElementById('totalPrice').textContent = pricePerPerson * peopleCount;
+    }
+</script>
 
 @include('components.footer')
+
+<style>
+    .hero-header {
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .img-fluid.rounded {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .list-group-item {
+        border-left: none;
+        border-right: none;
+    }
+    
+    /* Reviews section styling */
+    .rating {
+        unicode-bidi: bidi-override;
+        direction: ltr;
+    }
+    
+    .rating-input {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+    
+    .rating-input input {
+        display: none;
+    }
+    
+    .rating-input label {
+        color: #ddd;
+        font-size: 1.5rem;
+        padding: 0 0.2rem;
+        cursor: pointer;
+    }
+    
+    .rating-input input:checked ~ label,
+    .rating-input input:hover ~ label {
+        color: #ffc107;
+    }
+    
+    .star-label {
+        transition: color 0.2s;
+    }
+    
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+</style>

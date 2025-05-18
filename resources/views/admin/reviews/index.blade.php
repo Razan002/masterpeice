@@ -3,24 +3,10 @@
 <div class="main-content">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">إدارة التقييمات</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Review Management</h6>
             <div>
                 <form method="GET" class="form-inline">
-                    <div class="input-group mr-2">
-                        <select name="type" class="form-control">
-                            <option value="">كل التقييمات</option>
-                            <option value="package" {{ request('type') == 'package' ? 'selected' : '' }}>تقييمات الباقات</option>
-                            <option value="destination" {{ request('type') == 'destination' ? 'selected' : '' }}>تقييمات الوجهات</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="بحث..." value="{{ request('search') }}">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
+                    {{-- You can add search or filter inputs here if needed --}}
                 </form>
             </div>
         </div>
@@ -30,12 +16,12 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>المستخدم</th>
-                            <th>النوع</th>
-                            <th>الباقة/الوجهة</th>
-                            <th>التقييم</th>
-                            <th>التعليق</th>
-                            <th>التاريخ</th>
+                            <th>User</th>
+                            <th>Type</th>
+                            <th>Package/Destination</th>
+                            <th>Rating</th>
+                            <th>Comment</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,24 +32,24 @@
                                 @isset($review->user->name)
                                     {{ $review->user->name }}
                                 @else
-                                    <span class="text-muted">مستخدم غير متاح</span>
+                                    <span class="text-muted">User not available</span>
                                 @endisset
                             </td>
                             <td>
-                                {{ $review->reviewable_type == 'App\Models\Package' ? 'باقة' : 'وجهة' }}
+                                {{ $review->reviewable_type == 'App\Models\Package' ? 'Package' : 'Destination' }}
                             </td>
                             <td>
                                 @if($review->reviewable_type == 'App\Models\Package')
                                     @isset($review->package->name)
                                         {{ $review->package->name }}
                                     @else
-                                        <span class="text-muted">باقة غير متاحة</span>
+                                        <span class="text-muted">Package not available</span>
                                     @endisset
                                 @else
                                     @isset($review->destination->name)
                                         {{ $review->destination->name }}
                                     @else
-                                        <span class="text-muted">وجهة غير متاحة</span>
+                                        <span class="text-muted">Destination not available</span>
                                     @endisset
                                 @endif
                             </td>

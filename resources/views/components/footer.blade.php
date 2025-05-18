@@ -30,13 +30,13 @@
                 <h5 class="text-white mb-2">Gallery</h5>
                 <div class="row g-1"> <!-- Tighter grid spacing -->
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="{{ asset('assets/img/package-4.jpg') }}" alt="" style="max-height: 60px;">
+                        <img class="img-fluid bg-light p-1" src="{{ asset('assets/img/package-4.jpg') }}" alt="" style="max-height: 60px;  width: 60%;"  >
                     </div>
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="{{ asset('img/package-2.jpg') }}" alt="" style="max-height: 60px;">
+                        <img class="img-fluid bg-light p-1" src="{{ asset('assets/img/package-2.jpg') }}" alt="" style="max-height: 59px;">
                     </div>
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="{{ asset('assets/img/del1.jpg') }}" alt="" style="max-height: 60px;">
+                        <img class="img-fluid bg-light p-1" src="{{ asset('assets/img/del1.jpg') }}" alt="" style="max-height: 60px; width: 68%;">
                     </div>
                     <div class="col-4">
                         <img class="img-fluid bg-light p-1" src="{{ asset('assets/img/ph4.jpeg') }}" alt="" style="max-height: 60px;">
@@ -47,10 +47,11 @@
                     <div class="col-4">
                         <img class="img-fluid bg-light p-1" src="{{ asset('assets/img/package-1.jpg') }}" alt="" style="max-height: 60px;">
                     </div>
+                    
                 </div>
             </div>
 
-            <!-- Newsletter Column -->
+            {{-- <!-- Newsletter Column -->
             <div class="col-lg-4 col-md-6">
                 <h5 class="text-white mb-2">Newsletter</h5>
                 <p class="small">Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
@@ -58,7 +59,7 @@
                     <input class="form-control form-control-sm border-primary w-100 py-2 ps-3 pe-4" type="text" placeholder="Your email">
                     <button type="button" class="btn btn-sm btn-primary py-1 px-2 position-absolute top-0 end-0 mt-1 me-1">SignUp</button>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Copyright Section -->

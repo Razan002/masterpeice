@@ -26,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // تسجيل middleware مخصص للأدوار
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
-            'role' => \App\Http\Middleware\CheckRole::class,
+            'role' => CheckRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

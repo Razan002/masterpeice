@@ -16,80 +16,6 @@
         </div>
     </div>
 </div>
-</div>
-
-<!-- Booking Form Start -->
-{{-- <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <div class="booking p-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-md-6">
-                    <h1 class="text-white mb-4">Book A Tour</h1>
-                    <form action="{{ route('bookings.store') }}" method="POST">
-                        @csrf
-                        <div class="row g-3">
-                            <div class="col-md-12">
-                                <div class="form-floating">
-                                    <select class="form-select bg-transparent" id="package_id" name="package_id">
-                                        <option value="">اختر الباقة</option>
-                                        @foreach($packages as $package)
-                                        <option value="{{ $package->id }}" 
-                                            {{ !$package->is_available ? 'disabled style="color:#ccc"' : '' }}
-                                            {{ old('package_id') == $package->id ? 'selected' : '' }}>
-                                            {{ $package->title }}
-                                            @if(!$package->is_available)
-                                                (غير متاحة)
-                                            @endif
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                    <label for="package_id">اختر الباقة</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="date" class="form-control bg-transparent" id="booking_date" name="booking_date" required>
-                                    <label for="booking_date">تاريخ الحجز</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control bg-transparent" id="people_count" name="people_count" min="1" required>
-                                    <label for="people_count">عدد الأشخاص</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select bg-transparent" id="payment_method" name="payment_method" required>
-                                        <option value="online">دفع إلكتروني</option>
-                                        <option value="on_spot">دفع عند الوصول</option>
-                                    </select>
-                                    <label for="payment_method">طريقة الدفع</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control bg-transparent" placeholder="ملاحظات إضافية" id="custom_package_details" name="custom_package_details" style="height: 100px"></textarea>
-                                    <label for="custom_package_details">ملاحظات إضافية</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-outline-light w-100 py-3" type="submit">احجز الآن</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-6 text-white">
-                    <h6 class="text-white text-uppercase">الحجز</h6>
-                    <h1 class="text-white mb-4">الحجز عبر الإنترنت</h1>
-                    <p class="mb-4">يمكنك حجز رحلتك المفضلة بسهولة من خلال تعبئة النموذج. تأكد من اختيار الباقة المناسبة وتاريخ السفر.</p>
-                    <p class="mb-4">سيتم تأكيد حجزك عبر البريد الإلكتروني، ويمكنك دفع المبلغ إلكترونياً أو عند الوصول حسب اختيارك.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
-<!-- Booking Form End -->
 
 <!-- Package Start -->
 <div class="container-xxl py-5">
@@ -99,50 +25,111 @@
             <h1 class="mb-5">Awesome Packages</h1>
         </div>
         <div class="row g-4 justify-content-center">
-            @foreach($packages as $package)
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="package-item">
-                    <div class="overflow-hidden">
-                        @foreach($package->media as $media)
-                            <img class="img-fluid" src="{{ asset('storage/images/' . $media->media) }}" alt="{{ $package->title }}">
-                        @endforeach
-                    </div>
-                    <div class="d-flex border-bottom">
-                        <small class="flex-fill text-center border-end py-2">
-                            <i class="fa fa-map-marker-alt text-primary me-2"></i>{{ $package->destination->name }}
-                        </small>
-                        <small class="flex-fill text-center border-end py-2">
-                            <i class="fa fa-calendar-alt text-primary me-2"></i>{{ \Carbon\Carbon::parse($package->travel_date)->format('d M, Y') }}
-                        </small>
-                        <small class="flex-fill text-center py-2">
-                            <i class="fa fa-user text-primary me-2"></i>{{ $package->max_people }} Person
-                        </small>
-                    </div>
-                    <div class="text-center p-4">
-                        <h3 class="mb-0">{{ $package->price }}JD</h3>
-                        <div class="mb-3">
-                            @for ($i = 0; $i < 5; $i++)
-                                <small class="fa fa-star {{ $i < $package->rating ? 'text-primary' : 'text-muted' }}"></small>
-                            @endfor
-                        </div>
-                        <p>{{ $package->description }}</p>
-                        <div class="d-flex justify-content-center mb-2">
-                            <a href="{{ route('detailspackages', $package->id) }}" class="btn btn-sm btn-primary px-3" style="border-radius: 30px;">
-                                Read More
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           @foreach($packages as $package)
+@php
+    $totalBookings = $package->bookings->sum('people_count');
+    $isFullyBooked = $totalBookings >= $package->max_people;
+@endphp
+
+<div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="package-item {{ $package->date < now() || !$package->is_available || $isFullyBooked ? 'expired-package' : '' }}">
+        @if($package->date < now() || !$package->is_available || $isFullyBooked)
+        <div class="expired-badge">
+            {{ $isFullyBooked ? 'Fully Booked' : 'Unavailable' }}
+        </div>
+        @endif
+        
+        <div class="overflow-hidden package-image-container">
+            @foreach($package->media as $media)
+            <img class="img-fluid package-image" src="{{ asset('storage/' . $media->media) }}" alt="{{ $package->title }}">
             @endforeach
         </div>
+        
+        <div class="d-flex border-bottom">
+            <small class="flex-fill text-center border-end py-2">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i>{{ $package->destination->name }}
+            </small>
+            <small class="flex-fill text-center border-end py-2">
+                <i class="fa fa-calendar-alt text-primary me-2"></i>{{ \Carbon\Carbon::parse($package->date)->format('d M, Y') }}
+            </small>
+            <small class="flex-fill text-center py-2">
+                <i class="fa fa-users text-primary me-2"></i>
+                {{ $package->max_people - $totalBookings }} spots left
+            </small>
+        </div>
+        
+        <div class="text-center p-4">
+            <h3 class="mb-0">{{ $package->price }}JD</h3>
+            <p>{{ Str::limit($package->description, 50) }}</p>
+            <div class="d-flex justify-content-center mb-2">
+                @if($package->date >= now() && $package->is_available && !$isFullyBooked)
+                <a href="{{ route('detailspackages', $package->id) }}" class="btn btn-sm btn-primary px-3" style="border-radius: 30px;">
+                    Read More
+                </a>
+                @else
+                <button class="btn btn-sm btn-secondary px-3" style="border-radius: 30px;" disabled>
+                    {{ $isFullyBooked ? 'Fully Booked' : 'Unavailable' }}
+                </button>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 
-        {{-- <div class="d-flex justify-content-center mt-4">
-            {{ $packages->links() }}
 
-        </div> --}}
+        </div>
     </div>
 </div>
 <!-- Package End -->
 
 @include('components.footer')
+
+<style>
+    .expired-package {
+        position: relative;
+        opacity: 0.7;
+        filter: grayscale(70%);
+    }
+    
+    .expired-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #dc3545;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        z-index: 10;
+        font-weight: bold;
+    }
+    
+    .package-item {
+        transition: all 0.3s ease;
+    }
+    
+    .package-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .package-image-container {
+        height: 350px; /* ارتفاع ثابت لجميع الحاويات */
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .package-image {
+      
+        width: auto;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .package-item:hover .package-image {
+        transform: scale(1.05);
+    }
+
+</style>

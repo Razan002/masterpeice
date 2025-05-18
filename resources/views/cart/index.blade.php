@@ -3,13 +3,13 @@
     <div class="container py-5">
         <div class="row justify-content-center py-5">
             <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-                <h1 class="display-3 text-white animated slideInDown">Shop</h1>
+                <h1 class="display-3 text-white animated slideInDown">cart</h1>
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center">
+                    {{-- <ol class="breadcrumb justify-content-center">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page">Shop</li>
-                    </ol>
+                        <li class="breadcrumb-item text-white active" aria-current="page">cart</li>
+                    </ol> --}}
                 </nav>
             </div>
         </div>
@@ -209,7 +209,7 @@
                     if (response.success) {
                         quantityInput.val(newQuantity);
                         quantityInput.closest('tr').find('.item-total').text('JD' + response.item_total);
-                        location.reload(); // لتحديث السعر الإجمالي
+                        location.reload();    
                     }
                 }
             });

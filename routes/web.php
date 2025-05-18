@@ -19,9 +19,11 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminPackagesController;
 use App\Http\Controllers\Admin\AdminBookingController;
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SpecialOfferController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\AdminProfileController;
 
 
 ;
@@ -81,6 +83,7 @@ Route::post('/book-ticket', [BookingController::class, 'store'])->name('bookings
 // مسار لعرض الصفحة الشخصية
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+  Route::get('/profile/orders/{id}', [ProfileController::class, 'showOrder'])->name('profile.order.show');
 Route::resource('bookings', BookingController::class);
 // Admin Routes
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
@@ -192,6 +195,31 @@ Route::resource('reviews', ReviewController::class)->only([
 ]);
 Route::get('/packages/{package}/review', [ReviewController::class, 'createForPackage'])->name('review.create.package');
 Route::get('/products/{product}/review', [ReviewController::class, 'createForProduct'])->name('review.create.product');
+Route::get('/test-update', function () {
+    $product = \App\Models\Product::find(3); // Gold Ring مثلاً
+    $product->quantity = $product->quantity - 1;
+    $product->save();
+    return $product;
+});
+
+ Route::resource('produc', AdminProductController::class)->names([
+        'index' => 'admin.products.index',
+        'show' => 'admin.products.show',
+        'destroy' => 'admin.products.destroy',
+
+
+    ]);
+
+    // routes/web.php
+
+
+  
+    
+    // Profile Routes
+    Route::get('/profil', [AdminProfileController::class, 'index'])->name('admin.profile');
+    Route::put('/profile/update', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+    Route::put('/profile/update-password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.password');
+
 
 
 

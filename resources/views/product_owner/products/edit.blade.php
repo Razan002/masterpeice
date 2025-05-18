@@ -73,14 +73,7 @@
                         @endif
                     </div>
 
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status" name="status">
-                            <option value="active" {{ $product->status == 'active' ? 'selected' : '' }}>Active</option>
-                            <option value="inactive" {{ $product->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                            <option value="out_of_stock" {{ $product->status == 'out_of_stock' ? 'selected' : '' }}>Out of Stock</option>
-                        </select>
-                    </div>
+                   
                 </div>
             </div>
 

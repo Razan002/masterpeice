@@ -90,7 +90,6 @@ public function store(Request $request)
         'quantity' => 'required|integer|min:0',
         'category_id' => 'nullable|exists:categories,id',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'status' => 'required|in:active,inactive,out_of_stock',
         
     ]);
 
@@ -124,7 +123,6 @@ public function update(Request $request, $id)
         'quantity' => 'required|integer|min:0',
         'category_id' => 'nullable|exists:categories,id',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'status' => 'required|in:active,inactive,out_of_stock',
     ]);
 
     if ($request->hasFile('image')) {

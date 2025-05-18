@@ -62,53 +62,38 @@
                     <h1 class="mb-5">Explore Local Products</h1>
                 </div>
 
-               <!-- Products Display -->
-        @if($products->count() > 0)
-        <div class="row g-4 justify-content-center">
+             <!-- Products Display -->
+@if($products->count() > 0)
+<div class="row g-4 justify-content-center">
     @foreach($products as $product)
-        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
             <div class="package-item">
                 <div class="overflow-hidden">
                     <a href="{{ route('product.show', $product->id) }}">
-                       <img class="img-fluid w-100 "src="{{ asset('storage/' .$product->image) }}" alt="{{ $product->name }}">
-                      
+                       <img class="img-fluid w-100" src="{{ asset('storage/' .$product->image) }}" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
                     </a>
-                    
                 </div>
-                {{-- <div class="d-flex border-bottom">
-                    <small class="flex-fill text-center border-end py-2">
-                        <i class="fa fa-map-marker-alt text-primary me-2"></i>
-                        {{ $product->category->name }}
-                    </small>
-                    
-                    <small class="flex-fill text-center border-end py-2">
-                        <i class="fa fa-calendar-alt text-primary me-2"></i>
-                        {{ \Carbon\Carbon::parse($product->created_at)->format('M d, Y') }}
-                    </small>
-                    <small class="flex-fill text-center py-2">
-                        <i class="fa fa-box text-primary me-2"></i>
-                        {{ $product->quantity }} in stock
-                    </small>
-                </div> --}}
-                <div class="text-center p-4">
-                    <h5 class="mb-2">{{ $product->name }}</h5>
-                    {{-- <div class="mb-3">
-                        @for($i = 0; $i < 5; $i++)
-                            <small class="fa fa-star text-primary"></small>
-                        @endfor
-                    </div> --}}
-
+                <div class="text-center p-3">
+                    <h5 class="mb-2" style="font-size: 1rem;">{{Str::limit( $product->name, 15)}}</h5>
                     <div class="price-overlay">
-                        <span class="price-badge">${{ number_format($product->price, 2) }}</span>
+                        <span class="price-badge">JD{{ number_format($product->price, 2) }}</span>
+                        {{-- @if($product->quantity < 1)
+                            <span class="badge bg-danger ms-1">Out of Stock</span>
+                        @endif --}}
                     </div>
-                    <p>{{ Str::limit($product->description, 100) }}</p>
+                    <p style="font-size: 0.8rem;">{{ Str::limit($product->description, 25) }}</p>
                     <div class="d-flex justify-content-center mb-2">
-                        <form action="{{ route('cart.add') }}" method="POST">
+                        <form action="{{ route('cart.add') }}" method="POST" class="w-100">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="number" name="quantity" value="1" min="1" max="{{ $product->quantity }}" class="form-control mb-2">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fa fa-shopping-cart me-2"></i> Add to Cart
+                            <input type="number" name="quantity" value="1" min="1" max="{{ $product->quantity }}" 
+                                   class="form-control form-control-sm mb-2" 
+                                   @if($product->quantity < 1) disabled @endif>
+                            <button type="submit" class="btn btn-sm w-100 
+                                @if($product->quantity >= 1) btn-primary @else btn-secondary disabled @endif"
+                                @if($product->quantity < 1) disabled @endif>
+                                <i class="fa fa-shopping-cart me-1"></i> 
+                                @if($product->quantity >= 1) Add to Cart @else Out of Stock @endif
                             </button>
                         </form>
                     </div>
@@ -117,18 +102,14 @@
         </div>
     @endforeach
 </div>
-
-        <!-- Pagination -->
-        <div class="row mt-5">
-            <div class="d-flex justify-content-center mt-5">
-                {{ $products->links() }}
-            </div>
-        </div>
-        @else
-            <div class="alert alert-info text-center">
-                No products found matching your criteria.
-            </div>
-        @endif
+<div class="d-flex justify-content-center mt-4">
+    {{ $products->links('pagination::bootstrap-4') }}
+</div>
+@else
+    <div class="alert alert-info text-center">
+        No products found matching your criteria.
+    </div>
+@endif
     </div>
 </div>
     </div>

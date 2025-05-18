@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') | لوحة التحكم</title>
+    <title>@yield('title') | Admin Dashboard</title>
     
     <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
@@ -18,7 +18,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- ملف الستايل -->
     <link href="{{ asset('assets/css/admin.css') }}" rel="stylesheet">
-  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body class="admin-body">
     <div class="container-fluid">
@@ -29,6 +30,8 @@
             <!-- المحتوى الرئيسي -->
             <div class="col-md-9 ml-sm-auto col-lg-10 px-4 main-content">
                 @yield('content')
+                @yield('scripts')
+
             </div>
         </div>
     </div>

@@ -61,26 +61,28 @@
         </div>
     </div>
 
-    <!-- Charts -->
-    <div class="charts-row">
-        <div class="chart-card">
-            <div class="card-header">
-                <h3><i class="fas fa-chart-line"></i> Monthly Bookings Statistics</h3>
-            </div>
-            <div class="card-body">
-                <canvas id="bookingsChart"></canvas>
-            </div>
+ <!-- Charts -->
+<div class="charts-row">
+    <div class="chart-card">
+        <div class="card-header">
+            <h3><i class="fas fa-chart-line"></i> Monthly Bookings Statistics</h3>
         </div>
-        
-        <div class="chart-card">
-            <div class="card-header">
-                <h3><i class="fas fa-chart-pie"></i> Bookings Distribution by Package</h3>
-            </div>
-            <div class="card-body">
-                <canvas id="packagesChart"></canvas>
-            </div>
+        <div class="card-body">
+<canvas id="monthlyBookingsChart"></canvas> <!-- شارت الإحصائيات الشهرية -->
+
         </div>
     </div>
+    
+    <div class="chart-card">
+        <div class="card-header">
+            <h3><i class="fas fa-chart-pie"></i> Bookings Distribution by Package</h3>
+        </div>
+        <div class="card-body">
+<canvas id="packageDistributionChart"></canvas> <!-- شارت التوزيع -->
+
+        </div>
+    </div>
+</div>
 
     <!-- Recent Bookings -->
     <div class="recent-card">
@@ -102,7 +104,7 @@
                     </thead>
                     <tbody>
                         @foreach($recentBookings as $booking)
-                        {{-- <tr>
+                        <tr>
                             <td>{{ $booking->id }}</td>
                             <td>{{ $booking->user->name }}</td>
                             <td>{{ $booking->package->name }}</td>
@@ -112,7 +114,7 @@
                                     {{ $booking->status }}
                                 </span>
                             </td>
-                        </tr> --}}
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -122,66 +124,120 @@
 </div>
 </div>
 
-@section('scripts')
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{{-- <script>
-    // Monthly Bookings Chart
-    const bookingsCtx = document.getElementById('bookingsChart').getContext('2d');
-    const bookingsChart = new Chart(bookingsCtx, {
-        type: 'line',
-        data: {
-            labels: {!! json_encode($bookingStats['months']) !!},
-            datasets: [{
-                label: 'Number of Bookings',
-                data: {!! json_encode($bookingStats['counts']) !!},
-                backgroundColor: 'rgba(115, 103, 240, 0.1)',
-                borderColor: 'rgba(115, 103, 240, 1)',
-                borderWidth: 2,
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const bookingStats = @json($bookingStats);
+        const packageDistribution = @json($packageDistribution);
+
+        console.log(bookingStats);
+        console.log(packageDistribution);
+
+        // الرسم الأول
+        const ctx1 = document.getElementById('monthlyBookingsChart');
+        if (ctx1) {
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: bookingStats.months,
+                    datasets: [{
+                        label: ' booking count',
+                        data: bookingStats.counts,
+                        borderColor: '#283046',
+                        backgroundColor: 'rgba(20, 100, 100, 0.1)',
+                        borderWidth: 1,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            precision: 0
+                        }
+                    }
                 }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
+            });
+        }
+
+        // الرسم الثاني
+        const ctx2 = document.getElementById('packageDistributionChart');
+        if (ctx2) {
+            new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: packageDistribution.map(item => item.name),
+                    datasets: [{
+                        label: 'bookings count',
+                        data: packageDistribution.map(item => item.bookings_count),
+                        backgroundColor: [
+                            '#86B817', '#283046', '#FFCE56', '#8BC34A', '#FF9800'
+                        ]
+                    }]
                 }
-            }
+            });
         }
     });
+</script>
+<style>
+    /* تنسيقات عامة للـ Charts */
+    .charts-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .chart-card {
+        flex: 1;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        background: #f8f9fa;
+    }
+    
+    .card-header h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .card-header h3 i {
+        color: #7367F0;
+    }
+    
+    .card-body {
+        padding: 20px;
+        flex: 1;
+       
+        height: 60%;
+    }
+    
+    /* تنسيقات خاصة بالـ Charts */
+    .chart-card canvas {
+        width: 80% !important;
+        height: 60% !important;
+    }
+    
+    /* تنسيقات للعرض على الشاشات الصغيرة */
+    @media (max-width: 768px) {
+        .charts-row {
+            flex-direction: column;
+        }
+    }
+</style>
 
-    // // Package Distribution Chart
-    // const packagesCtx = document.getElementById('packagesChart').getContext('2d');
-    // // const packagesChart = new Chart(packagesCtx, {
-    // //     type: 'doughnut',
-    // //     data: {
-    // //         labels: {!! json_encode($packageDistribution->pluck('name')) !!},
-    // //         datasets: [{
-    // //             data: {!! json_encode($packageDistribution->pluck('bookings_count')) !!},
-    // //             backgroundColor: [
-    // //                 'rgba(115, 103, 240, 0.8)',
-    // //                 'rgba(40, 199, 111, 0.8)',
-    // //                 'rgba(255, 159, 67, 0.8)',
-    // //                 'rgba(234, 84, 85, 0.8)',
-    // //                 'rgba(0, 207, 232, 0.8)'
-    // //             ],
-    // //             borderWidth: 0
-    // //         }]
-    // //     },
-    //     options: {
-    //         responsive: true,
-    //         plugins: {
-    //             legend: {
-    //                 position: 'bottom'
-    //             }
-    //         }
-    //     }
-    // });
-</script> --}}
-@endsection
+

@@ -37,6 +37,19 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => now(),
             ]
         );
+          DB::table('users')->updateOrInsert(
+            ['email' => 'product@example.com'],
+            [
+                'name' => 'product owner',
+                'email' => 'product@example.com',
+                'password' => bcrypt('password'),
+                'phone' => '0791234567',
+                'role' => 'product_owner',
+                'address' => 'Irbid, Jordan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
         
     }
 }

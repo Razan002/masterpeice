@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('type', ['adventure', 'heritage', 'cultural_food', 'spiritual']);
             $table->foreignId('guide_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('destination_id')->constrained('destinations')->onDelete('cascade');
+              $table->string('image')->nullable(); 
         
             $table->timestamps();
         });

@@ -151,22 +151,15 @@
                         </div>
                     </div>
                 </div>
-<!-- صورة الغلاف -->
-{{-- @if($coverImage)
-<img src="{{ asset('storage/package_images/' . $coverImage->file_name) }}" 
-     class="img-fluid">
-@endif --}}
 
-<!-- صور المعرض -->
-{{-- <div class="row">
-    @foreach($galleryImages as $image)
-    <div class="col-md-3 mb-3">
-        <img src="{{ asset('storage/package_images/gallery/' . $image->file_name) }}" 
-             class="img-thumbnail">
-    </div>
-    @endforeach
+                <!-- Image Upload -->
+<div class="mb-3">
+    <label for="image" class="form-label text-muted">Package Image <span class="text-danger">*</span></label>
+    <input class="form-control" type="file" id="image" name="image" accept="image/*" required>
+    <div class="invalid-feedback">Please upload an image</div>
 </div>
-                <!-- Timing Section --> --}}
+
+
                 <div class="card border-success mt-3">
                     <div class="card-header bg-light">
                         <h5 class="mb-0"><i class="fas fa-clock" style="color: #86B817;"></i>

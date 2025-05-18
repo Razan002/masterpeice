@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // ربط الطلب بالمستخدم
             $table->decimal('total', 10, 2); 
-            $table->string('status'); 
+            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending'); 
             $table->string('address'); 
             $table->string('payment_method'); 
             $table->timestamps(); 

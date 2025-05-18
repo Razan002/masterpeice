@@ -109,72 +109,41 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
 {
-    $validated = $request->validate([
-        'destination_id' => 'nullable|exists:destinations,id',
-        'package_id' => 'nullable|exists:packages,id',
-        'product_id' => 'nullable|exists:products,id',
-        'booking_id' => 'required|exists:bookings,id',
-        'rating' => 'required|integer|between:1,5',
-        'comment' => 'required|string|max:500',
+    $request->validate([
+        'package_id' => 'required|exists:packages,id',
+        'rating' => 'required|integer|min:1|max:5',
+        'comment' => 'required|string',
     ]);
 
-    // Verify booking belongs to user and is active
-    $booking = Booking::where('id', $validated['booking_id'])
-        ->where('user_id', Auth::id())
-        ->when(isset($validated['destination_id']), function($query) use ($validated) {
-            $query->where('destination_id', $validated['destination_id']);
-        })
-        ->when(isset($validated['package_id']), function($query) use ($validated) {
-            $query->where('package_id', $validated['package_id']);
-        })
-        ->when(isset($validated['product_id']), function($query) use ($validated) {
-            $query->where('product_id', $validated['product_id']);
-        })
-        ->where('booking_date', '<=', Carbon::today())
-        ->first();
+    // تأكد أن المستخدم قد حجز هذه الباقة
+    $hasBooking = Booking::where('user_id', auth::id())
+                         ->where('package_id', $request->package_id)
+                         ->exists();
 
-    // Rest of the method remains the same...
-    if (!$booking) {
-        return back()->with('error', 'Invalid or inactive booking');
+    if (!$hasBooking) {
+        return back()->with('error', 'You must book this package before leaving a review.');
     }
 
-    if (Review::where('booking_id', $validated['booking_id'])->exists()) {
-        return back()->with('error', 'You already reviewed this booking');
+    // تأكد أن المستخدم لم يكتب مراجعة سابقة لنفس الباقة
+    $alreadyReviewed = Review::where('user_id', auth::id())
+                             ->where('package_id', $request->package_id)
+                             ->exists();
+
+    if ($alreadyReviewed) {
+        return back()->with('error', 'You have already reviewed this package.');
     }
 
     Review::create([
-        'user_id' => Auth::id(),
-        'destination_id' => $validated['destination_id'] ?? null,
-        'package_id' => $validated['package_id'] ?? null,
-        'product_id' => $validated['product_id'] ?? null,
-        'booking_id' => $validated['booking_id'],
-        'rating' => $validated['rating'],
-        'comment' => $validated['comment'],
+        'user_id' => auth::id(),
+        'package_id' => $request->package_id,
+        'rating' => $request->rating,
+        'comment' => $request->comment,
     ]);
 
-    // Redirect to appropriate page based on what was reviewed
-    if (isset($validated['destination_id'])) {
-        return redirect()
-            ->route('destination.show', $validated['destination_id'])
-            ->with('success', 'Review submitted successfully!');
-    } elseif (isset($validated['package_id'])) {
-        return redirect()
-            ->route('packages.show', $validated['package_id'])
-            ->with('success', 'Review submitted successfully!');
-    } elseif (isset($validated['product_id'])) {
-        return redirect()
-            ->route('products.show', $validated['product_id'])
-            ->with('success', 'Review submitted successfully!');
-    }
-
-    return back()->with('error', 'Invalid review submission');
+    return back()->with('success', 'Review submitted successfully!');
 }
 
-    public function edit(Review $review)
-    {
-        $this->authorize('update', $review);
-        return view('reviews.edit', compact('review'));
-    }
+
 
     /**
      * Update a review
@@ -213,28 +182,33 @@ class ReviewController extends Controller
     /**
      * Show user's reviews
      */
-    public function userReviews()
-    {
-        $reviews = Review::where('user_id', Auth::id())
-                  ->with('destination')
-                  ->latest()
-                  ->paginate(10);
+public function userReviews()
+{
+    $reviews = Review::where('user_id', Auth::id())
+              ->with('destination')
+              ->orderBy('created_at', 'asc') // تغيير من oldest() إلى orderBy
+              ->paginate(5);
 
-        return view('reviews.user-index', compact('reviews'));
-    }
+    return view('reviews.user-index', compact('reviews'));
+}
+
+/**
+ * Admin review dashboard
+ */
+public function adminIndex()
+{
+    $this->authorize('viewAny', Review::class);
+
+    $reviews = Review::with(['user', 'destination'])
+                  ->orderBy('created_at', 'asc') // تغيير من oldest() إلى orderBy
+                  ->paginate(20);
+
+    return view('reviews.admin-index', compact('reviews'));
+}
 
     /**
      * Admin review dashboard
      */
-    public function adminIndex()
-    {
-        $this->authorize('viewAny', Review::class);
-
-        $reviews = Review::with(['user', 'destination'])
-                      ->latest()
-                      ->paginate(20);
-
-        return view('reviews.admin-index', compact('reviews'));
-    }
+  
 }
 

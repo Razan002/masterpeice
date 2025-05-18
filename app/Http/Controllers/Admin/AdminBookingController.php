@@ -38,7 +38,7 @@ class AdminBookingController extends Controller
             $query->where('booking_date', '<=', $request->date_to);
         }
 
-        $bookings = $query->paginate(15);
+        $bookings = $query->paginate(10);
 
         return view('admin.booking.index', compact('bookings'));
     }

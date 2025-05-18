@@ -33,8 +33,11 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="card h-100 package-card">
                     <div class="card-img-container">
-                        <img src="{{ asset('storage/'.$package->image) }}" class="card-img-top" alt="{{ $package->title }}">
-                        <span class="package-type">{{ $package->type }}</span>
+@if($package->media->isNotEmpty())
+    <img src="{{ asset('storage/' . $package->media->first()->media) }}" alt="{{ $package->title }}" class="card-img-top">
+@else
+    <p class="text-center py-5">No image available</p>
+@endif                        <span class="package-type">{{ $package->type }}</span>
                         <div class="package-overlay"></div>
                     </div>
                     <div class="card-body">

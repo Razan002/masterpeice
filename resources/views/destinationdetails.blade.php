@@ -296,12 +296,7 @@
             {{ $destination->description }}
         </p>
 
-        <!-- Price (if numeric) -->
-        @if($destination->price > 0)
-            <div class="price">
-                <span>Price: {{ number_format($destination->price, 2) }} JD</span>
-            </div>
-        @endif
+    
         
         <!-- Details Grid -->
         <div class="details-grid">

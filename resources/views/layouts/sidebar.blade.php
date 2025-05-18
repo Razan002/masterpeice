@@ -1,7 +1,7 @@
 <div class="sidebar">
     <!-- Sidebar Title -->
     <div class="sidebar-brand">
-        <i class="fas fa-cogs me-2"></i>
+        <i class="fas fa-fw fa-user"></i>
         <h3>{{ Auth::user()->name }}</h3>
     </div>
     
@@ -14,6 +14,8 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+            
+          
             
             <li class="nav-item">
                 <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
@@ -28,13 +30,13 @@
                     <span>Packages</span>
                 </a>
             </li>
-
-            {{-- <li class="nav-item">
-                <a href="{{ route('admin.destinations.index') }}" class="nav-link {{ request()->routeIs('admin.destinations*') ? 'active' : '' }}">
-                    <i class="fas fa-fw fa-map-marker-alt"></i>
-                    <span>Destinations</span>
+            
+             <li class="nav-item">
+                <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products*') ? 'active' : '' }}">
+                    <i class="fas fa-box-open"></i>
+                    <span>products</span>
                 </a>
-            </li> --}}
+            </li>
             
             <li class="nav-item">
                 <a href="{{ route('admin.bookings') }}" class="nav-link {{ request()->routeIs('admin.bookings*') ? 'active' : '' }}">
@@ -49,7 +51,13 @@
                     <span>Reviews</span>
                 </a>
             </li>
-
+  <!-- Profile Link Added Here -->
+            <li class="nav-item">
+                <a href="{{ route('admin.profile') }}" class="nav-link {{ request()->routeIs('admin.profile*') ? 'active' : '' }}">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
             <li class="nav-item mt-4">
                 <a href="{{ route('logout') }}" class="nav-link text-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt"></i>
